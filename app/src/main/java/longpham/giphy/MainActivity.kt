@@ -3,8 +3,8 @@ package longpham.giphy
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import longpham.giphy.ui.BaseFragment
-import longpham.giphy.ui.TrendingFragment
+import longpham.giphy.ui.common.BaseFragment
+import longpham.giphy.ui.trending.TrendingFragment
 
 class MainActivity : AppCompatActivity() {
 

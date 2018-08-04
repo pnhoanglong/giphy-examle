@@ -1,4 +1,4 @@
-package longpham.giphy.ui
+package longpham.giphy.ui.trending
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import longpham.giphy.R
 import longpham.giphy.databinding.TrendingFragmentBinding
+import longpham.giphy.ui.common.BaseFragment
+import longpham.giphy.ui.image.ImageFragment
 
 class TrendingFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -19,7 +21,7 @@ class TrendingFragment: BaseFragment() {
 
 
 
-    fun startImageFragment(){
+    private fun startImageFragment(){
         val imageFragment = ImageFragment.getInstance()
         startNewFragment(imageFragment)
     }

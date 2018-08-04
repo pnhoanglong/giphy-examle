@@ -1,4 +1,4 @@
-package longpham.giphy.ui
+package longpham.giphy.ui.common
 
 import android.content.Context
 import android.support.v4.app.Fragment
