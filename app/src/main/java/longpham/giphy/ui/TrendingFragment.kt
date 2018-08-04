@@ -11,6 +11,20 @@ import longpham.giphy.databinding.TrendingFragmentBinding
 class TrendingFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<TrendingFragmentBinding>(inflater, R.layout.trending_fragment, container, false)
+        binding.button.setOnClickListener {
+            startImageFragment()
+        }
         return binding.root
+    }
+
+
+
+    fun startImageFragment(){
+        val imageFragment = ImageFragment.getInstance()
+        startNewFragment(imageFragment)
+    }
+
+    companion object {
+        fun getInstance(): TrendingFragment = TrendingFragment()
     }
 }

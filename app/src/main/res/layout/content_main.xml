@@ -9,11 +9,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame"
+    android:id="@+id/main_content"
     tools:showIn="@layout/activity_main">
-
-    <fragment
-        android:id="@+id/main_fragment"
-        android:name="longpham.giphy.ui.TrendingFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </FrameLayout>
