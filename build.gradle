@@ -20,6 +20,7 @@ ext {
     min_sdk = 16
     compile_sdk = 27
     support_library_version = '27.1.1'
+    dagger_version = '2.16'
 }
 
 allprojects {
