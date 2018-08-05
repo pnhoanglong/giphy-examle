@@ -9,7 +9,7 @@ import longpham.giphy.databinding.ImageListItemViewBinding
 import longpham.giphy.models.GiphyImage
 import longpham.giphy.ui.common.DataBoundViewHolder
 
-class ImageRecyclerViewAdapter(private val fragment: Fragment, private val items: MutableList<GiphyImage>) :
+class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImage>) :
         RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>() {
 
     override fun getItemCount(): Int = items.size
@@ -25,10 +25,6 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, private val items
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ImageListItemViewBinding.inflate(layoutInflater, parent, false)
         return DataBoundViewHolder(binding)
-    }
-
-    fun addItems(newItems: List<GiphyImage>) {
-        items.addAll(newItems)
     }
 }
 

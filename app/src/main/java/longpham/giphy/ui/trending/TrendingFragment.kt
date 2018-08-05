@@ -1,5 +1,6 @@
 package longpham.giphy.ui.trending
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -32,16 +33,22 @@ class TrendingFragment : BaseFragment(), Injectable {
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val images = mutableListOf<GiphyImage>()
-        repository.toString()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(TrendingViewModel::class.java)
-        viewModel.test()
+        recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf())
+        binding.imageRecyclerView.adapter = recyclerViewAdapter
 
-        recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = images)
+        viewModel.images.observe(this, Observer { images ->
+            images?.let {
+                recyclerViewAdapter.items = it
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+        })
+        viewModel.loadTrendingImages()
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         linearLayoutManager = LinearLayoutManager(context)
@@ -49,20 +56,16 @@ class TrendingFragment : BaseFragment(), Injectable {
         binding.imageRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
-            adapter = recyclerViewAdapter
             addOnScrollListener(createInfiniteScrollListener())
         }
         return binding.root
     }
 
     private fun createInfiniteScrollListener(): InfiniteScrollListener =
-            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.ITEM_PER_REQUEST, layoutManager = linearLayoutManager) {
+            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.ITEM_PER_REQUEST,
+                    layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
-                    val newImages = mutableListOf<GiphyImage>()
-                    repeat(AppConstants.ITEM_PER_REQUEST) {
-//                        newImages.add(giphyImage)
-                    }
-                    recyclerViewAdapter.addItems(newImages)
+                    viewModel.loadTrendingImages()
                     refreshView(view = binding.imageRecyclerView, position = firstVisibleItemPosition)
                 }
             }

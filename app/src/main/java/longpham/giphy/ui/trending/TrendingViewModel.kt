@@ -11,14 +11,14 @@ import longpham.giphy.util.LogUtil
 import javax.inject.Inject
 
 class TrendingViewModel @Inject constructor(private val repository: IRepository): ViewModel() {
-    private val _imagesLiveData = MutableLiveData<List<GiphyImage>>()
-    val images:  LiveData<List<GiphyImage>>
+    private val _imagesLiveData = MutableLiveData<MutableList<GiphyImage>>()
+    val images:  LiveData<MutableList<GiphyImage>>
         get() = _imagesLiveData
 
 
-    val stillImage = Image(url = "https://4.imimg.com/data4/KQ/QE/ANDROID-40327085/product-500x500.jpeg", with = 0, height = 0)
-    val gifImage = Image(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif", with = 0, height = 0)
-    val image = GiphyImage(stillImage = stillImage, gifImage = gifImage)
+    private val stillImage = Image(url = "https://4.imimg.com/data4/KQ/QE/ANDROID-40327085/product-500x500.jpeg", with = 0, height = 0)
+    private val gifImage = Image(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif", with = 0, height = 0)
+    private val image = GiphyImage(stillImage = stillImage, gifImage = gifImage)
 
     private val giphyImages = mutableListOf<GiphyImage>()
 
