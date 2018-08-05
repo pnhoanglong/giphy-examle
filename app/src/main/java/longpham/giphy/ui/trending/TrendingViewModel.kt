@@ -2,12 +2,11 @@ package longpham.giphy.ui.trending
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import longpham.giphy.models.GiphyImage
-import longpham.giphy.models.Image
 import longpham.giphy.repository.IRepository
 import longpham.giphy.util.AppConstants
-import longpham.giphy.util.LogUtil
 import javax.inject.Inject
 
 class TrendingViewModel @Inject constructor(private val repository: IRepository): ViewModel() {
@@ -15,22 +14,18 @@ class TrendingViewModel @Inject constructor(private val repository: IRepository)
     val images:  LiveData<MutableList<GiphyImage>>
         get() = _imagesLiveData
 
-
-    private val stillImage = Image(url = "https://4.imimg.com/data4/KQ/QE/ANDROID-40327085/product-500x500.jpeg", with = 0, height = 0)
-    private val gifImage = Image(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif", with = 0, height = 0)
-    private val image = GiphyImage(stillImage = stillImage, gifImage = gifImage)
-
-    private val giphyImages = mutableListOf<GiphyImage>()
+    private val loadedImages = mutableListOf<GiphyImage>()
+    var offset = 0
 
     fun loadTrendingImages(){
-       repeat(AppConstants.ITEM_PER_REQUEST)  {
-           giphyImages.add(image)
-       }
-        _imagesLiveData.postValue(giphyImages)
-    }
-
-
-    fun test(){
-        LogUtil.e("ViewModel", "Test view module $repository")
+        val liveData = repository.getTrendingImages(limit = AppConstants.ITEM_PER_REQUEST,  offset = offset)
+        val observer = Observer<List<GiphyImage>?> { images ->
+            if (images?.isEmpty() == false){
+                loadedImages.addAll(images)
+                _imagesLiveData.postValue(loadedImages)
+            }
+        }
+        liveData.observeForever(observer)
+        offset += AppConstants.ITEM_PER_REQUEST
     }
 }

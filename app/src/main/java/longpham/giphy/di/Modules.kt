@@ -12,6 +12,7 @@ import dagger.multibindings.IntoMap
 import longpham.giphy.MainActivity
 import longpham.giphy.repository.GiphyRepository
 import longpham.giphy.repository.IRepository
+import longpham.giphy.repository.MockRepository
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.ui.trending.TrendingFragment
 import longpham.giphy.ui.trending.TrendingViewModel
@@ -28,7 +29,8 @@ class AppModule {
     @Singleton
 
     @Provides
-    fun provideRepository(giphyRepository: GiphyRepository): IRepository = giphyRepository
+//    fun provideRepository(giphyRepository: GiphyRepository): IRepository = giphyRepository
+    fun provideRepository(giphyRepository: MockRepository): IRepository = giphyRepository
 }
 
 @Module
