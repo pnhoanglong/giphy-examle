@@ -56,11 +56,9 @@ abstract class InfiniteScrollListener
      * calling invalidate method and scrolling to given position
      *
      * @param view RecyclerView to be refreshed
-     * @param adapter adapter with new list of items to be loaded
      * @param position position to which RecyclerView will be scrolled
      */
-    protected fun refreshView(view: RecyclerView, adapter: RecyclerView.Adapter<*>, position: Int) {
-        view.adapter = adapter
+    protected fun refreshView(view: RecyclerView, position: Int) {
         view.invalidate()
         view.scrollToPosition(position)
     }

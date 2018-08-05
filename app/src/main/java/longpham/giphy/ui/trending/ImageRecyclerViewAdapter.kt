@@ -26,5 +26,9 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, private val items
         val binding = ImageListItemViewBinding.inflate(layoutInflater, parent, false)
         return DataBoundViewHolder(binding)
     }
+
+    fun addItems(newItems: List<GiphyImage>) {
+        items.addAll(newItems)
+    }
 }
 
