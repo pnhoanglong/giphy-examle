@@ -2,8 +2,8 @@ package longpham.giphy.util
 
 import com.giphy.sdk.core.models.enums.MediaType
 
-
 object AppConstants {
+    val ITEM_PER_REQUEST = 5
 }
 
 object GiphyConstants {
