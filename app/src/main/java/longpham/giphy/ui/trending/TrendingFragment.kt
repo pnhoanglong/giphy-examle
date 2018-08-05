@@ -44,6 +44,7 @@ class TrendingFragment : BaseFragment(), Injectable {
             images?.let {
                 recyclerViewAdapter.items = it
                 recyclerViewAdapter.notifyDataSetChanged()
+                binding.progressBar.visibility = View.GONE
             }
         })
         viewModel.loadTrendingImages()
@@ -66,7 +67,8 @@ class TrendingFragment : BaseFragment(), Injectable {
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
                     viewModel.loadTrendingImages()
-                    refreshView(view = binding.imageRecyclerView, position = firstVisibleItemPosition)
+                    binding.progressBar.visibility = View.VISIBLE
+//                    refreshView(view = binding.imageRecyclerView, position = firstVisibleItemPosition)
                 }
             }
 

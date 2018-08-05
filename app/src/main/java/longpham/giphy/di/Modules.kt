@@ -29,8 +29,8 @@ class AppModule {
     @Singleton
 
     @Provides
-//    fun provideRepository(giphyRepository: GiphyRepository): IRepository = giphyRepository
-    fun provideRepository(giphyRepository: MockRepository): IRepository = giphyRepository
+    fun provideRepository(giphyRepository: GiphyRepository): IRepository = giphyRepository
+//    fun provideRepository(giphyRepository: MockRepository): IRepository = giphyRepository
 }
 
 @Module
