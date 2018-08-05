@@ -11,7 +11,7 @@ object LogUtil {
     fun e(tag: String, message: String) = log { Log.e(tag, message) }
 
     internal fun log(block: () -> Unit) {
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             block.invoke()
         }
     }

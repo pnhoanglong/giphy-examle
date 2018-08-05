@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import longpham.giphy.R
 import longpham.giphy.databinding.TrendingFragmentBinding
+import longpham.giphy.di.Injectable
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.image.ImageFragment
 
-class TrendingFragment: BaseFragment() {
+class TrendingFragment: BaseFragment(), Injectable {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<TrendingFragmentBinding>(inflater, R.layout.trending_fragment, container, false)
         binding.button.setOnClickListener {
@@ -18,8 +20,6 @@ class TrendingFragment: BaseFragment() {
         }
         return binding.root
     }
-
-
 
     private fun startImageFragment(){
         val imageFragment = ImageFragment.getInstance()
