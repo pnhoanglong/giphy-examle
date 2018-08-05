@@ -2,14 +2,13 @@ package longpham.giphy.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.giphy.sdk.core.models.Media
-import com.giphy.sdk.core.network.api.GPHApiClient
+import com.giphy.sdk.core.models.Images
+import com.giphy.sdk.core.network.api.GPHApi
 import longpham.giphy.models.GiphyImage
 import longpham.giphy.models.Image
 import longpham.giphy.util.GiphyConstants
 import longpham.giphy.util.logException
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 interface IRepository {
     /**
@@ -23,20 +22,17 @@ interface IRepository {
     fun getRandomImage(tag: String): LiveData<GiphyImage>
 }
 
-class GiphyRepository @Inject constructor(val giphyClient: GPHApiClient) : IRepository {
-//    val giphyClient = GPHApiClient(GiphyConstants.GIPHY_API_KEY)
-
+class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImage>> {
         val liveData = MutableLiveData<List<GiphyImage>>()
-
-        giphyClient.trending(GiphyConstants.IMAGE_TYPE, limit, offset, GiphyConstants.RATING) trendingApi@{ listMediaResponse, throwable ->
+        giphyApi.trending(GiphyConstants.IMAGE_TYPE, limit, offset, GiphyConstants.RATING) trendingApi@{ listMediaResponse, throwable ->
             throwable?.logException()
             if (listMediaResponse?.data?.isEmpty() != false) {
                 // No images data return -> Return null
                 liveData.postValue(null)
                 return@trendingApi
             }
-            val trendingImages = listMediaResponse.data.map { it.toGiphyImage() }
+            val trendingImages: List<GiphyImage> = listMediaResponse.data.mapNotNull { it?.images?.toGiphyImage()}
             liveData.postValue(trendingImages)
         }
         return liveData
@@ -44,15 +40,9 @@ class GiphyRepository @Inject constructor(val giphyClient: GPHApiClient) : IRepo
 
     override fun getRandomImage(tag: String): LiveData<GiphyImage> {
         val liveData = MutableLiveData<GiphyImage>()
-        giphyClient.random(tag, GiphyConstants.IMAGE_TYPE, GiphyConstants.RATING) randomApi@{ mediaResponse, throwable ->
+        giphyApi.random(tag, GiphyConstants.IMAGE_TYPE, GiphyConstants.RATING) randomApi@{ mediaResponse, throwable ->
             throwable?.printStackTrace()
-            if (mediaResponse?.data == null) {
-                // No images data return -> Return null
-                liveData.postValue(null)
-                return@randomApi
-            }
-            val image = mediaResponse.data.toGiphyImage()
-            liveData.postValue(image)
+            liveData.postValue(mediaResponse?.data?.images?.toGiphyImage())
         }
         return liveData
     }
@@ -60,15 +50,32 @@ class GiphyRepository @Inject constructor(val giphyClient: GPHApiClient) : IRepo
     /**
      * Convert from Giphy API Media Response Object to GiphyImage Model
      */
-    fun Media.toGiphyImage(): GiphyImage {
-        var stillImage: Image by Delegates.notNull()
-        var gifImage: Image by Delegates.notNull()
-        Media@ this.images.fixedWidthStill.let {
-            stillImage = Image(url = it.gifUrl, with = it.width, height = it.height)
-        }
-        Media@ this.images.downsizedSmall.let {
-            gifImage = Image(url = it.gifUrl, with = it.width, height = it.height)
+    fun Images.toGiphyImage(): GiphyImage? {
+        var stillImage: Image?
+        var gifImage: Image?
+
+        val giphyStillImages = listOf(fixedWidthStill, fixedWidthSmallStill, fixedHeightStill,
+                fixedHeightSmallStill, downsizedStill, originalStill)
+        stillImage = createImageModel(giphyStillImages)
+
+        val giphyGifImages = listOf(fixedWidth, fixedWidthSmall, fixedHeight, fixedHeightSmall,
+                fixedWidthDownsampled, fixedHeightDownsampled, downsized, downsizedSmall, downsizedMedium, downsizedLarge)
+        gifImage = createImageModel(giphyGifImages)
+        if (stillImage == null || gifImage == null) {
+            return null
         }
         return GiphyImage(stillImage = stillImage, gifImage = gifImage)
+    }
+
+    /**
+     * Create a Image Model from the first not null Giphy Images
+     */
+    private fun createImageModel(giphyImages: List<com.giphy.sdk.core.models.Image>): Image? {
+        var imageModel: Image? = null
+        giphyImages.firstOrNull { it != null }?.let {
+            imageModel = Image(url = it.gifUrl, with = it.width, height = it.height)
+
+        }
+        return imageModel
     }
 }
