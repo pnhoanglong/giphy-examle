@@ -1,16 +1,12 @@
 package longpham.giphy.ui.trending
 
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.engine.Resource
-import longpham.giphy.R
 import longpham.giphy.databinding.ImageListItemViewBinding
 import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.ui.common.DataBoundViewHolder
@@ -21,8 +17,6 @@ import longpham.giphy.util.LogUtil
 
 class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: MutableList<GiphyImagesObject>, val itemViewOnClickListener: ((GiphyImagesObject) -> Unit)? = null) :
         RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImagesObject> {
-
-    val TAG = ImageRecyclerViewAdapter::class.simpleName!!
 
     override fun getItemCount(): Int = items.size
 
@@ -58,5 +52,4 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: Mutabl
 
     private fun buildLoadImageRequest(fragment: Fragment, imageUrl: String): RequestBuilder<Drawable> =
             GlideApp.with(fragment).load(imageUrl).override( getScreenWidth(), AppConstants.MAX_IMAGE_HEIGHT)
-
 }
