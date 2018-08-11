@@ -9,13 +9,13 @@ import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import longpham.giphy.R
 import longpham.giphy.databinding.ImageListItemViewBinding
-import longpham.giphy.models.GiphyImage
+import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.ui.common.DataBoundViewHolder
 import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.util.LogUtil
 
-class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImage>) :
-        RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImage> {
+class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImagesObject>) :
+        RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImagesObject> {
 
 
     val TAG = ImageRecyclerViewAdapter::class.simpleName!!
@@ -40,14 +40,14 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
     /*
         Implement ListPreloader.PreloadModelProvider interface
      */
-    override fun getPreloadItems(position: Int): MutableList<GiphyImage> =
+    override fun getPreloadItems(position: Int): MutableList<GiphyImagesObject> =
             if (items.size <= position) {
                 mutableListOf()
             } else {
                 mutableListOf(items[position])
             }
 
-    override fun getPreloadRequestBuilder(item: GiphyImage): RequestBuilder<*>?  =
+    override fun getPreloadRequestBuilder(item: GiphyImagesObject): RequestBuilder<*>?  =
             buildLoadImageRequest(fragment = fragment, imageUrl = item.stillImage.url)
 
 

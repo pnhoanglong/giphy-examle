@@ -15,7 +15,7 @@ import com.bumptech.glide.util.ViewPreloadSizeProvider
 import longpham.giphy.R
 import longpham.giphy.databinding.TrendingFragmentBinding
 import longpham.giphy.di.Injectable
-import longpham.giphy.models.GiphyImage
+import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
@@ -83,7 +83,7 @@ class TrendingFragment : BaseFragment(), Injectable {
                     }
 
                     viewModel.loadTrendingImages()
-                    binding.progressBar?.apply {
+                    binding.progressBar.apply {
                         visibility = View.VISIBLE
                         (layoutParams as? ConstraintLayout.LayoutParams)?.topToTop = -1
                     }
@@ -91,9 +91,9 @@ class TrendingFragment : BaseFragment(), Injectable {
             }
 
 
-    private fun createGlideRecyclerViewIntegrationScrollListener(): RecyclerViewPreloader<GiphyImage> {
-       val sizeProvider = ViewPreloadSizeProvider<GiphyImage>()
-       return  RecyclerViewPreloader<GiphyImage>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
+    private fun createGlideRecyclerViewIntegrationScrollListener(): RecyclerViewPreloader<GiphyImagesObject> {
+       val sizeProvider = ViewPreloadSizeProvider<GiphyImagesObject>()
+       return  RecyclerViewPreloader<GiphyImagesObject>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
     }
 
     //TODO: navigation must be done in Fragment
