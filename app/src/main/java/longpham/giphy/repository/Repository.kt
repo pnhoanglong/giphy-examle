@@ -15,7 +15,9 @@ interface IRepository {
     /**
      * Get trending images from server
      */
+    //TODO: Should be change to single event
     fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImage>>
+
 
     /**
      * Get a random image from server

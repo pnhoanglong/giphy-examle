@@ -75,6 +75,12 @@ class TrendingFragment : BaseFragment(), Injectable {
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
                     LogUtil.i("onScrolledToEnd")
+
+                    if (firstVisibleItemPosition + AppConstants.LOAD_MORE_ITEMS_COUNT <= recyclerViewAdapter.items.size){
+                        //No need to load more item
+                        return
+                    }
+
                     viewModel.loadTrendingImages()
                     binding.progressBar?.apply {
                         visibility = View.VISIBLE
