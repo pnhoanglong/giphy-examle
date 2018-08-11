@@ -68,12 +68,15 @@ class TrendingFragment : BaseFragment(), Injectable {
             object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.INIT_LOAD_ITEMS_COUNT,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
-                    LogUtil.i("onScrolledToEnd" )
+                    LogUtil.i("onScrolledToEnd")
                     viewModel.loadTrendingImages()
-                    binding.progressBar.visibility = View.VISIBLE
-//                    refreshView(view = binding.imageRecyclerView, position = firstVisibleItemPosition)
+                    binding.progressBar?.apply {
+                        visibility = View.VISIBLE
+                        (layoutParams as? ConstraintLayout.LayoutParams)?.topToTop = -1
+                    }
                 }
             }
+
     //TODO: navigation must be done in Fragment
     private fun startImageFragment() {
         val imageFragment = ImageFragment.getInstance()
