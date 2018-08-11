@@ -11,4 +11,5 @@ object GiphyConstants {
     val API_KEY = "dc6zaTOxFJmzC"
     val IMAGE_TYPE = MediaType.gif
     val RATING = null
+    val DEFAULT_IMAGE_TAG = "android"
 }

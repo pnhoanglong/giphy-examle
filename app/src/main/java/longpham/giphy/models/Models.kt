@@ -2,6 +2,7 @@ package longpham.giphy.models
 
 import com.giphy.sdk.core.models.Images
 import com.giphy.sdk.core.models.Media
+import longpham.giphy.util.GiphyConstants
 
 /**
  * Data class hold an image which can be a still image or gif info.
@@ -28,7 +29,7 @@ data class GiphyImagesObject (
 fun Media?.toGiphyImage(): GiphyImagesObject? {
     if (this == null) return null
 
-    val tag = if (tags?.isEmpty() == false) tags!![0] else ""
+    val tag = if (tags?.isEmpty() == false) tags!![0] else GiphyConstants.DEFAULT_IMAGE_TAG
     return images.toGiphyImage(tag)
 }
 
