@@ -1,15 +1,17 @@
 package longpham.giphy.ui.trending
 
+import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
+import longpham.giphy.R
 import longpham.giphy.databinding.ImageListItemViewBinding
 import longpham.giphy.models.GiphyImage
 import longpham.giphy.ui.common.DataBoundViewHolder
+import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.util.LogUtil
 
 class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImage>) :
@@ -25,7 +27,7 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
         val imageUrl = items[position].stillImage.url
         LogUtil.d("LoadImageUrl: $imageUrl")
         holder.binding.orderNumberTextView.text = position.toString()
-        Glide.with(fragment).load(imageUrl).into(imageView)
+        buildLoadImageRequest(fragment = fragment, imageUrl = imageUrl).into(imageView)
         holder.binding.executePendingBindings()
     }
 
@@ -46,6 +48,10 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
             }
 
     override fun getPreloadRequestBuilder(item: GiphyImage): RequestBuilder<*>?  =
-            Glide.with(fragment).load(item.stillImage.url)
+            buildLoadImageRequest(fragment = fragment, imageUrl = item.stillImage.url)
+
+
+    private fun buildLoadImageRequest(fragment: Fragment, imageUrl: String): RequestBuilder<Drawable> =
+            GlideApp.with(fragment).load(imageUrl).placeholder(R.drawable.placeholder)
 }
 
