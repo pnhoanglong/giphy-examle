@@ -6,6 +6,7 @@ object AppConstants {
     const val INIT_LOAD_ITEMS_COUNT = 5
     const val LOAD_MORE_ITEMS_COUNT = 15
     const val RANDOM_IMAGE_INTERVAL = 10000L
+    const val MAX_IMAGE_HEIGHT = 2000
 }
 
 object GiphyConstants {
