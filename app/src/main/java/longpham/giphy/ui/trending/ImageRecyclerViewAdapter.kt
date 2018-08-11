@@ -52,6 +52,6 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
 
 
     private fun buildLoadImageRequest(fragment: Fragment, imageUrl: String): RequestBuilder<Drawable> =
-            GlideApp.with(fragment).load(imageUrl).placeholder(R.drawable.placeholder)
+            GlideApp.with(fragment).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop()
 }
 
