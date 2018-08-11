@@ -10,9 +10,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.ViewPreloadSizeProvider
 import longpham.giphy.R
 import longpham.giphy.databinding.TrendingFragmentBinding
 import longpham.giphy.di.Injectable
+import longpham.giphy.models.GiphyImage
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
@@ -33,6 +36,7 @@ class TrendingFragment : BaseFragment(), Injectable {
     private lateinit var binding: TrendingFragmentBinding
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private val PRELOAD_ADHEAD_ITEMS = 10
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -48,6 +52,10 @@ class TrendingFragment : BaseFragment(), Injectable {
                 binding.progressBar.visibility = View.GONE
             }
         })
+        binding.imageRecyclerView.apply {
+            addOnScrollListener(createInfiniteScrollListener())
+            addOnScrollListener(createGlideRecyclerViewIntegrationScrollListener())
+        }
         viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
     }
 
@@ -56,10 +64,8 @@ class TrendingFragment : BaseFragment(), Injectable {
         linearLayoutManager = LinearLayoutManager(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.trending_fragment, container, false)
         binding.imageRecyclerView.apply {
-            LogUtil.i("addOnScrollListener" )
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
-            addOnScrollListener(createInfiniteScrollListener())
         }
         return binding.root
     }
@@ -76,6 +82,12 @@ class TrendingFragment : BaseFragment(), Injectable {
                     }
                 }
             }
+
+
+    private fun createGlideRecyclerViewIntegrationScrollListener(): RecyclerViewPreloader<GiphyImage> {
+       val sizeProvider = ViewPreloadSizeProvider<GiphyImage>()
+       return  RecyclerViewPreloader<GiphyImage>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
+    }
 
     //TODO: navigation must be done in Fragment
     private fun startImageFragment() {
