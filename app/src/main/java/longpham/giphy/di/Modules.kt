@@ -1,6 +1,5 @@
 package longpham.giphy.di
 
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.giphy.sdk.core.network.api.GPHApi
 import com.giphy.sdk.core.network.api.GPHApiClient
@@ -12,11 +11,10 @@ import dagger.multibindings.IntoMap
 import longpham.giphy.MainActivity
 import longpham.giphy.repository.GiphyRepository
 import longpham.giphy.repository.IRepository
-import longpham.giphy.repository.MockRepository
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.ui.trending.TrendingFragment
-import longpham.giphy.ui.trending.TrendingViewModel
 import longpham.giphy.util.GiphyConstants
+import longpham.giphy.viewmodel.ViewModel
 import longpham.giphy.viewmodel.ViewModelFactory
 import longpham.giphy.viewmodel.ViewModelKey
 import javax.inject.Singleton
@@ -52,8 +50,8 @@ abstract class FragmentBuilderModule {
 abstract class VieModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(TrendingViewModel::class)
-    abstract fun bindTrendingViewModel(trendingViewModel: TrendingViewModel): ViewModel
+    @ViewModelKey(ViewModel::class)
+    abstract fun bindTrendingViewModel(trendingViewModel: ViewModel): android.arch.lifecycle.ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

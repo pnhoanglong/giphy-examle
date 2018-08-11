@@ -1,4 +1,4 @@
-package longpham.giphy.ui.trending
+package longpham.giphy.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -9,10 +9,15 @@ import longpham.giphy.repository.IRepository
 import longpham.giphy.util.AppConstants
 import javax.inject.Inject
 
-class TrendingViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
+class ViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
     private val _imagesLiveData = MutableLiveData<MutableList<GiphyImage>>()
     val images: LiveData<MutableList<GiphyImage>>
         get() = _imagesLiveData
+
+    private val _selectedImageLiveData = MutableLiveData<GiphyImage>()
+    val selectedImage: LiveData<GiphyImage>
+        get() = _selectedImageLiveData
+
 
     private val loadedImages = mutableListOf<GiphyImage>()
 
@@ -36,5 +41,15 @@ class TrendingViewModel @Inject constructor(private val repository: IRepository)
             }
         })
         offset += AppConstants.LOAD_MORE_ITEMS_COUNT
+    }
+
+
+//    fun getNextRandomImage(){
+//        val imageTag = selectedImage.value?.
+//    }
+
+
+    fun setSelectedImage(image: GiphyImage){
+        _selectedImageLiveData.postValue(image)
     }
 }

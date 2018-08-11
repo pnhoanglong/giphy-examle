@@ -22,6 +22,7 @@ import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
+import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
@@ -31,7 +32,7 @@ class TrendingFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var repository: IRepository
 
-    private lateinit var viewModel: TrendingViewModel
+    private lateinit var viewModel: ViewModel
 
     private lateinit var binding: TrendingFragmentBinding
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
@@ -41,7 +42,7 @@ class TrendingFragment : BaseFragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(TrendingViewModel::class.java)
+                .get(ViewModel::class.java)
         recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf())
         binding.imageRecyclerView.adapter = recyclerViewAdapter
 
