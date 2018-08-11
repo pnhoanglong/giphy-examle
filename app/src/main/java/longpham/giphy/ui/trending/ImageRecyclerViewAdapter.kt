@@ -1,22 +1,26 @@
 package longpham.giphy.ui.trending
 
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.engine.Resource
 import longpham.giphy.R
 import longpham.giphy.databinding.ImageListItemViewBinding
-import longpham.giphy.models.GiphyImage
+import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.ui.common.DataBoundViewHolder
 import longpham.giphy.ui.common.GlideApp
+import longpham.giphy.ui.common.getScreenWidth
+import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
 
-class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImage>) :
-        RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImage> {
-
+class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: MutableList<GiphyImagesObject>, val itemViewOnClickListener: ((GiphyImagesObject) -> Unit)? = null) :
+        RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImagesObject> {
 
     val TAG = ImageRecyclerViewAdapter::class.simpleName!!
 
@@ -26,8 +30,10 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
         val imageView = holder.binding.trendingImageView
         val imageUrl = items[position].stillImage.url
         LogUtil.d("LoadImageUrl: $imageUrl")
-        holder.binding.orderNumberTextView.text = position.toString()
         buildLoadImageRequest(fragment = fragment, imageUrl = imageUrl).into(imageView)
+        holder.binding.root.setOnClickListener{
+            itemViewOnClickListener?.invoke(items[position])
+        }
         holder.binding.executePendingBindings()
     }
 
@@ -40,18 +46,17 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
     /*
         Implement ListPreloader.PreloadModelProvider interface
      */
-    override fun getPreloadItems(position: Int): MutableList<GiphyImage> =
+    override fun getPreloadItems(position: Int): MutableList<GiphyImagesObject> =
             if (items.size <= position) {
                 mutableListOf()
             } else {
                 mutableListOf(items[position])
             }
 
-    override fun getPreloadRequestBuilder(item: GiphyImage): RequestBuilder<*>?  =
+    override fun getPreloadRequestBuilder(item: GiphyImagesObject): RequestBuilder<*>?  =
             buildLoadImageRequest(fragment = fragment, imageUrl = item.stillImage.url)
 
-
     private fun buildLoadImageRequest(fragment: Fragment, imageUrl: String): RequestBuilder<Drawable> =
-            GlideApp.with(fragment).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop()
-}
+            GlideApp.with(fragment).load(imageUrl).override( getScreenWidth(), AppConstants.MAX_IMAGE_HEIGHT)
 
+}

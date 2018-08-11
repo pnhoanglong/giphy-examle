@@ -3,12 +3,15 @@ package longpham.giphy.util
 import com.giphy.sdk.core.models.enums.MediaType
 
 object AppConstants {
-    val INIT_LOAD_ITEMS_COUNT = 5
-    val LOAD_MORE_ITEMS_COUNT = 15
+    const val INIT_LOAD_ITEMS_COUNT = 5
+    const val LOAD_MORE_ITEMS_COUNT = 15
+    const val RANDOM_IMAGE_INTERVAL = 10000L
+    const val MAX_IMAGE_HEIGHT = 2000
 }
 
 object GiphyConstants {
-    val API_KEY = "dc6zaTOxFJmzC"
+    const val API_KEY = "dc6zaTOxFJmzC"
     val IMAGE_TYPE = MediaType.gif
     val RATING = null
+    const val DEFAULT_IMAGE_TAG = "android"
 }

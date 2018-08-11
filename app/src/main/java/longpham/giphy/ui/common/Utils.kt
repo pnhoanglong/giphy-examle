@@ -1,5 +1,6 @@
 package longpham.giphy.ui.common
 
+import android.content.res.Resources
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import com.bumptech.glide.annotation.GlideModule
@@ -14,3 +15,5 @@ class DataBoundViewHolder<out T : ViewDataBinding> constructor(val binding: T) :
 @GlideModule
 class GiphyAppGlideModule: AppGlideModule() {
 }
+
+fun getScreenWidth(): Int =  Resources.getSystem().displayMetrics.widthPixels
