@@ -4,12 +4,13 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <ImageView
             android:id="@+id/loadingImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/loading_image_side"
+            android:layout_height="@dimen/loading_image_side"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

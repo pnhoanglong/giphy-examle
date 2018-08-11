@@ -41,9 +41,13 @@ class TrendingFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
                 .get(ViewModel::class.java)
-        recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf())
+        recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf()) { clickedItem ->
+            viewModel.setSelectedImage(image = clickedItem)
+            startImageFragment()
+        }
+
         binding.imageRecyclerView.adapter = recyclerViewAdapter
 
         viewModel.images.observe(this, Observer { images ->
@@ -75,8 +79,6 @@ class TrendingFragment : BaseFragment(), Injectable {
             object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.INIT_LOAD_ITEMS_COUNT,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
-                    LogUtil.i("onScrolledToEnd")
-
                     if (firstVisibleItemPosition + AppConstants.LOAD_MORE_ITEMS_COUNT <= recyclerViewAdapter.items.size){
                         //No need to load more item
                         return
@@ -96,7 +98,6 @@ class TrendingFragment : BaseFragment(), Injectable {
        return  RecyclerViewPreloader<GiphyImagesObject>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
     }
 
-    //TODO: navigation must be done in Fragment
     private fun startImageFragment() {
         val imageFragment = ImageFragment.getInstance()
         startNewFragment(imageFragment)

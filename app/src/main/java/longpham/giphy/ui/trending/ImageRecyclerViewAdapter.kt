@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import longpham.giphy.R
@@ -14,9 +15,8 @@ import longpham.giphy.ui.common.DataBoundViewHolder
 import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.util.LogUtil
 
-class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImagesObject>) :
+class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: MutableList<GiphyImagesObject>, val itemViewOnClickListener: ((GiphyImagesObject) -> Unit)? = null) :
         RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImagesObject> {
-
 
     val TAG = ImageRecyclerViewAdapter::class.simpleName!!
 
@@ -26,8 +26,10 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
         val imageView = holder.binding.trendingImageView
         val imageUrl = items[position].stillImage.url
         LogUtil.d("LoadImageUrl: $imageUrl")
-        holder.binding.orderNumberTextView.text = position.toString()
         buildLoadImageRequest(fragment = fragment, imageUrl = imageUrl).into(imageView)
+        holder.binding.root.setOnClickListener{
+            itemViewOnClickListener?.invoke(items[position])
+        }
         holder.binding.executePendingBindings()
     }
 
@@ -50,8 +52,6 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
     override fun getPreloadRequestBuilder(item: GiphyImagesObject): RequestBuilder<*>?  =
             buildLoadImageRequest(fragment = fragment, imageUrl = item.stillImage.url)
 
-
     private fun buildLoadImageRequest(fragment: Fragment, imageUrl: String): RequestBuilder<Drawable> =
             GlideApp.with(fragment).load(imageUrl).placeholder(R.drawable.placeholder).centerCrop()
 }
-
