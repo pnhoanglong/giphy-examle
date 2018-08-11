@@ -21,7 +21,7 @@ class MockRepository @Inject constructor(): IRepository {
     override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImage>> {
         val liveData = MutableLiveData<List<GiphyImage>>()
         val giphyImages = mutableListOf<GiphyImage>()
-        repeat(AppConstants.ITEM_PER_REQUEST) {
+        repeat(AppConstants.LOAD_MORE_ITEMS_COUNT) {
             giphyImages.add(image)
         }
         liveData.value = giphyImages

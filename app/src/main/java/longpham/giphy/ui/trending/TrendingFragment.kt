@@ -47,7 +47,7 @@ class TrendingFragment : BaseFragment(), Injectable {
                 binding.progressBar.visibility = View.GONE
             }
         })
-        viewModel.loadTrendingImages()
+        viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
     }
 
 

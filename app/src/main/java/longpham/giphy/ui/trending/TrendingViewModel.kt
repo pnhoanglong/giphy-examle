@@ -17,8 +17,9 @@ class TrendingViewModel @Inject constructor(private val repository: IRepository)
     private val loadedImages = mutableListOf<GiphyImage>()
     var offset = 0
 
-    fun loadTrendingImages(){
-        val liveData = repository.getTrendingImages(limit = AppConstants.ITEM_PER_REQUEST,  offset = offset)
+    @Synchronized
+    fun loadTrendingImages(limit: Int = AppConstants.LOAD_MORE_ITEMS_COUNT){
+        val liveData = repository.getTrendingImages(limit = limit,  offset = offset)
         val observer = Observer<List<GiphyImage>?> { images ->
             if (images?.isEmpty() == false){
                 loadedImages.addAll(images)
@@ -26,6 +27,6 @@ class TrendingViewModel @Inject constructor(private val repository: IRepository)
             }
         }
         liveData.observeForever(observer)
-        offset += AppConstants.ITEM_PER_REQUEST
+        offset += AppConstants.LOAD_MORE_ITEMS_COUNT
     }
 }
