@@ -65,7 +65,7 @@ class TrendingFragment : BaseFragment(), Injectable {
     }
 
     private fun createInfiniteScrollListener(): InfiniteScrollListener =
-            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.LOAD_MORE_ITEMS_COUNT,
+            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.INIT_LOAD_ITEMS_COUNT,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
                     LogUtil.i("onScrolledToEnd" )
