@@ -24,9 +24,8 @@ interface IRepository {
 }
 
 class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
-    private val TAG = GiphyRepository::class.simpleName!!
     override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImage>> {
-        LogUtil.i(TAG, "getTrendingImages: limit=$limit offset=$offset")
+        LogUtil.i("getTrendingImages: limit=$limit offset=$offset")
         val liveData = MutableLiveData<List<GiphyImage>>()
         giphyApi.trending(GiphyConstants.IMAGE_TYPE, limit, offset, GiphyConstants.RATING) trendingApi@{ listMediaResponse, throwable ->
             throwable?.logException()
@@ -42,7 +41,7 @@ class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     }
 
     override fun getRandomImage(tag: String): LiveData<GiphyImage> {
-        LogUtil.i(TAG, "getRandomImage: tag=$tag")
+        LogUtil.i("getRandomImage: tag=$tag")
         val liveData = MutableLiveData<GiphyImage>()
         giphyApi.random(tag, GiphyConstants.IMAGE_TYPE, GiphyConstants.RATING) randomApi@{ mediaResponse, throwable ->
             throwable?.printStackTrace()

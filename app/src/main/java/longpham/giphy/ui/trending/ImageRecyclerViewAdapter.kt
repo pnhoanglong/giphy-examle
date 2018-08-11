@@ -20,7 +20,7 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items:
     override fun onBindViewHolder(holder: DataBoundViewHolder<ImageListItemViewBinding>, position: Int) {
         val imageView = holder.binding.trendingImageView
         val imageUrl = items[position].stillImage.url
-        LogUtil.i(TAG, "LoadImageUrl: $imageUrl")
+        LogUtil.i("LoadImageUrl: $imageUrl")
         Glide.with(fragment).load(imageUrl).into(imageView)
         holder.binding.executePendingBindings()
     }

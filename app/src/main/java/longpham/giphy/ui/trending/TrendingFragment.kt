@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,12 @@ import android.view.ViewGroup
 import longpham.giphy.R
 import longpham.giphy.databinding.TrendingFragmentBinding
 import longpham.giphy.di.Injectable
-import longpham.giphy.models.GiphyImage
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.util.AppConstants
+import longpham.giphy.util.LogUtil
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
@@ -55,6 +56,7 @@ class TrendingFragment : BaseFragment(), Injectable {
         linearLayoutManager = LinearLayoutManager(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.trending_fragment, container, false)
         binding.imageRecyclerView.apply {
+            LogUtil.i("addOnScrollListener" )
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
             addOnScrollListener(createInfiniteScrollListener())
@@ -63,15 +65,16 @@ class TrendingFragment : BaseFragment(), Injectable {
     }
 
     private fun createInfiniteScrollListener(): InfiniteScrollListener =
-            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.ITEM_PER_REQUEST,
+            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.LOAD_MORE_ITEMS_COUNT,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
+                    LogUtil.i("onScrolledToEnd" )
                     viewModel.loadTrendingImages()
                     binding.progressBar.visibility = View.VISIBLE
 //                    refreshView(view = binding.imageRecyclerView, position = firstVisibleItemPosition)
                 }
             }
-
+    //TODO: navigation must be done in Fragment
     private fun startImageFragment() {
         val imageFragment = ImageFragment.getInstance()
         startNewFragment(imageFragment)
