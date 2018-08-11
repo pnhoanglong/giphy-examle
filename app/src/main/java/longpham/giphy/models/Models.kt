@@ -42,8 +42,8 @@ private fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
             fixedHeightSmallStill, downsizedStill, originalStill)
     stillImage = createImageModel(giphyStillImages)
 
-    val giphyGifImages = listOf(fixedWidth, fixedWidthSmall, fixedHeight, fixedHeightSmall,
-            fixedWidthDownsampled, fixedHeightDownsampled, downsized, downsizedSmall, downsizedMedium, downsizedLarge)
+    val giphyGifImages = listOf(downsized, downsizedSmall, downsizedMedium, downsizedLarge, original, fixedHeight, fixedWidthSmall, fixedHeightSmall,
+            fixedWidthDownsampled, fixedHeightDownsampled)
     gifImage = createImageModel(giphyGifImages)
     if (stillImage == null || gifImage == null) {
         return null
@@ -56,9 +56,8 @@ private fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
  */
 private fun createImageModel(giphyImages: List<com.giphy.sdk.core.models.Image?>): GiphyImage? {
     var imageModel: GiphyImage? = null
-    giphyImages.firstOrNull { it != null }?.let {
+    giphyImages.firstOrNull {!it?.gifUrl.isNullOrEmpty()}?.let {
         imageModel = GiphyImage(url = it.gifUrl, with = it.width, height = it.height)
-
     }
     return imageModel
 }
