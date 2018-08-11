@@ -8,15 +8,19 @@ import com.bumptech.glide.Glide
 import longpham.giphy.databinding.ImageListItemViewBinding
 import longpham.giphy.models.GiphyImage
 import longpham.giphy.ui.common.DataBoundViewHolder
+import longpham.giphy.util.LogUtil
 
 class ImageRecyclerViewAdapter(private val fragment: Fragment, public var items: MutableList<GiphyImage>) :
         RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>() {
+
+    val TAG = ImageRecyclerViewAdapter::class.simpleName!!
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: DataBoundViewHolder<ImageListItemViewBinding>, position: Int) {
         val imageView = holder.binding.trendingImageView
         val imageUrl = items[position].stillImage.url
+        LogUtil.i(TAG, "LoadImageUrl: $imageUrl")
         Glide.with(fragment).load(imageUrl).into(imageView)
         holder.binding.executePendingBindings()
     }

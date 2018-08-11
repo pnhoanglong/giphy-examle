@@ -1,6 +1,7 @@
 package longpham.giphy.util
 
 import longpham.giphy.repository.IRepository
+import kotlin.reflect.KClass
 
 fun showRandomImage(repository: IRepository){
     val tag = "RandomImage"

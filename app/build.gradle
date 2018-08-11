@@ -39,7 +39,8 @@ android {
 }
 
 dependencies {
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_library_version"
     implementation "com.android.support:design:$support_library_version"
     //Constrain layout
@@ -60,7 +61,10 @@ dependencies {
 
     // Glide show image
     implementation "com.github.bumptech.glide:glide:$glide_version"
-
+    implementation ("com.github.bumptech.glide:recyclerview-integration:$glide_version") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
     //Architecture components
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$architecture_components_version"
