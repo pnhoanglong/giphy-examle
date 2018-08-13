@@ -47,9 +47,9 @@ class TrendingFragment : BaseFragment(), Injectable {
             viewModel.setSelectedImage(image = clickedItem)
             startImageFragment()
         }
-
         binding.imageRecyclerView.adapter = recyclerViewAdapter
 
+        // Observer images live data
         viewModel.images.observe(this, Observer { images ->
             images?.let {
                 recyclerViewAdapter.items = it
@@ -57,11 +57,17 @@ class TrendingFragment : BaseFragment(), Injectable {
                 binding.progressBar.visibility = View.GONE
             }
         })
+
+        // Make image recycler view can scroll infinite
         binding.imageRecyclerView.apply {
             addOnScrollListener(createInfiniteScrollListener())
             addOnScrollListener(createGlideRecyclerViewIntegrationScrollListener())
         }
+
+        // Load Images from server
         viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
+
+
     }
 
 
