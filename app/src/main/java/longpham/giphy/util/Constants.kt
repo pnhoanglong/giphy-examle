@@ -13,5 +13,5 @@ object GiphyConstants {
     const val API_KEY = "dc6zaTOxFJmzC"
     val IMAGE_TYPE = MediaType.gif
     val RATING = null
-    const val DEFAULT_IMAGE_TAG = "funny"
+    const val DEFAULT_IMAGE_TAG = ""
 }

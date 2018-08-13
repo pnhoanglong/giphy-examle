@@ -3,6 +3,7 @@ package longpham.giphy.models
 import com.giphy.sdk.core.models.Images
 import com.giphy.sdk.core.models.Media
 import longpham.giphy.util.GiphyConstants
+import longpham.giphy.util.LogUtil
 
 /**
  * Data class hold an image which can be a still image or gif info.
@@ -42,8 +43,8 @@ private fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
             fixedHeightSmallStill, downsizedStill, originalStill)
     stillImage = createImageModel(giphyStillImages)
 
-    val giphyGifImages = listOf(downsized, downsizedSmall, downsizedMedium, downsizedLarge, original, fixedHeight, fixedWidthSmall, fixedHeightSmall,
-            fixedWidthDownsampled, fixedHeightDownsampled)
+    val giphyGifImages = listOf(downsized, downsizedSmall, downsizedMedium, downsizedLarge,
+            fixedWidth, fixedHeight, original, fixedWidthDownsampled, fixedHeightDownsampled)
     gifImage = createImageModel(giphyGifImages)
     if (stillImage == null || gifImage == null) {
         return null
