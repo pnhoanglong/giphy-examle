@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class ImageFragment : BaseFragment(), Injectable {
     private lateinit var viewModel: ViewModel
 
     private lateinit var binding: ImageFragmentBinding
+    private var loadingNextImage = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.image_fragment, container, false)
@@ -44,7 +46,7 @@ class ImageFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
                 .get(ViewModel::class.java)
 
-
+        //Observer random image live data
         viewModel.selectedImage.observe(this, Observer { selectedImage ->
             if (selectedImage == null) return@Observer
             LogUtil.d("Display random image: ${selectedImage!!.gifImage.url}")
@@ -58,16 +60,20 @@ class ImageFragment : BaseFragment(), Injectable {
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isConnected ->
             if (!isConnected!!) {
+                loadingNextImage = false
                 return@Observer
             }
+            if (loadingNextImage) return@Observer
+
+            LogUtil.i("Network connected -> Load random image")
+            loadingNextImage = true
             viewModel.getNextRandomImage()
-            scheduleLoadRandomImage()
         })
     }
 
     private fun scheduleLoadRandomImage() {
         // Do not schedule the next loading if fragment is detached or network is disconnected
-        if (isDetached || !networkConnectivityLiveData.value!!) return
+        if (isDetached || !loadingNextImage) return
         binding.root.postDelayed({
             viewModel.getNextRandomImage()
             scheduleLoadRandomImage()

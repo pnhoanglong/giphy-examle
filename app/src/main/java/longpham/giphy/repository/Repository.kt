@@ -42,7 +42,7 @@ class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     }
 
     override fun getRandomImage(tag: String): LiveData<GiphyImagesObject> {
-        LogUtil.i("getRandomImage: tag=$tag")
+        LogUtil.i("getRandomImage")
         val liveData = MutableLiveData<GiphyImagesObject>()
         giphyApi.random(tag, GiphyConstants.IMAGE_TYPE, GiphyConstants.RATING) randomApi@{ mediaResponse, throwable ->
             throwable?.logException()

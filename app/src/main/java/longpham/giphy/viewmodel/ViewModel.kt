@@ -61,10 +61,7 @@ class ViewModel @Inject constructor(private val repository: IRepository) : ViewM
         }
     }
 
-
     fun setSelectedImage(image: GiphyImagesObject) {
         _selectedImageLiveData.postValue(image)
     }
-
-    //Use SingleLiveEvent to infor error to MainActivity -> use snack bar to display
 }
