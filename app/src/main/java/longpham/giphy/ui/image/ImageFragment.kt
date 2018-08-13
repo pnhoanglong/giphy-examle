@@ -4,10 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import longpham.giphy.R
 import longpham.giphy.databinding.ImageFragmentBinding
 import longpham.giphy.di.Injectable
@@ -39,12 +44,13 @@ class ImageFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
                 .get(ViewModel::class.java)
 
+
         viewModel.selectedImage.observe(this, Observer { selectedImage ->
             if (selectedImage == null) return@Observer
             LogUtil.d("Display random image: ${selectedImage!!.gifImage.url}")
             GlideApp.with(this)
                     .load(selectedImage!!.gifImage.url)
-                    .fitCenter()
+                    .fitCenter().listener(glideListener)
                     .into(binding.imageView)
         })
         loadRandomImage()
@@ -56,6 +62,16 @@ class ImageFragment : BaseFragment(), Injectable {
             viewModel.getNextRandomImage()
             loadRandomImage()
         }, AppConstants.RANDOM_IMAGE_INTERVAL)
+    }
+
+    private val glideListener = object: RequestListener<Drawable>{
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            LogUtil.e("Failed to image because ${e?.message}")
+            viewModel.getNextRandomImage()
+            return false
+        }
+
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean)  = false
     }
 
     companion object {
