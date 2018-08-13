@@ -1,5 +1,6 @@
 package longpham.giphy
 
+import android.arch.lifecycle.MutableLiveData
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -46,7 +47,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     /***Monitor network connectivity***/
-    private fun checkNetworkConnection() {
+    private val _networkConnectivity = MutableLiveData<Boolean>()
+    val networkConnectivityLiveData = _networkConnectivity
+
+    private fun checkNetworkConnection(): Boolean {
         fun isConnected(): Boolean {
             val activeNetwork = (getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo
                     ?: return false
@@ -61,13 +65,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             LogUtil.e("Network Connected: $connected")
             networkErrorTextView.visibility = if (connected) View.GONE else View.VISIBLE
         }
-
-        informNetworkConnectivity(isConnected())
+        val isConnected = isConnected()
+        informNetworkConnectivity(isConnected)
+        return isConnected
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            checkNetworkConnection()
+            _networkConnectivity.value = checkNetworkConnection()
         }
     }
 

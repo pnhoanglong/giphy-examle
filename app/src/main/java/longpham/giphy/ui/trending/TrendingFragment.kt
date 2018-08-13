@@ -67,7 +67,14 @@ class TrendingFragment : BaseFragment(), Injectable {
         // Load Images from server
         viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
 
-
+        //Observer network connectivity
+        networkConnectivityLiveData.observe(this, Observer { isNetworkConnected ->
+            // Load more image if network changed to connected
+            if (!isNetworkConnected!!){
+                return@Observer
+            }
+            viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
+        })
     }
 
 
