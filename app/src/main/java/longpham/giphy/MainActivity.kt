@@ -56,13 +56,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     ?: return false
             return when (activeNetwork.type) {
                 ConnectivityManager.TYPE_WIFI -> true
-                ConnectivityManager.TYPE_WIFI -> true
+                ConnectivityManager.TYPE_MOBILE-> true
                 else -> false
             }
         }
 
         fun informNetworkConnectivity(connected: Boolean) {
-            LogUtil.e("Network Connected: $connected")
+            LogUtil.d("Network Connected: $connected")
             networkErrorTextView.visibility = if (connected) View.GONE else View.VISIBLE
         }
         val isConnected = isConnected()
@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+            LogUtil.i("Network state changed")
             _networkConnectivity.value = checkNetworkConnection()
         }
     }
