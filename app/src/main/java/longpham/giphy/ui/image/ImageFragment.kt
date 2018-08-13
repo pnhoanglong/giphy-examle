@@ -53,14 +53,24 @@ class ImageFragment : BaseFragment(), Injectable {
                     .fitCenter().listener(glideListener)
                     .into(binding.imageView)
         })
-        loadRandomImage()
+        scheduleLoadRandomImage()
+
+        //Observer network connectivity
+        networkConnectivityLiveData.observe(this, Observer { isConnected ->
+            if (!isConnected!!) {
+                return@Observer
+            }
+            viewModel.getNextRandomImage()
+            scheduleLoadRandomImage()
+        })
     }
 
-    private fun loadRandomImage() {
-        if (isDetached) return
+    private fun scheduleLoadRandomImage() {
+        // Do not schedule the next loading if fragment is detached or network is disconnected
+        if (isDetached || !networkConnectivityLiveData.value!!) return
         binding.root.postDelayed({
             viewModel.getNextRandomImage()
-            loadRandomImage()
+            scheduleLoadRandomImage()
         }, AppConstants.RANDOM_IMAGE_INTERVAL)
     }
 
