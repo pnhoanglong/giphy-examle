@@ -4,7 +4,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/vertical_image_margin">
 
         <ImageView
             android:id="@+id/trendingImageView"
