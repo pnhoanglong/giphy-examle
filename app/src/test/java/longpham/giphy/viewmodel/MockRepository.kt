@@ -1,9 +1,10 @@
-package longpham.giphy.repository
+package longpham.giphy.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.models.GiphyImage
+import longpham.giphy.repository.IRepository
 import longpham.giphy.util.AppConstants
 import javax.inject.Inject
 
