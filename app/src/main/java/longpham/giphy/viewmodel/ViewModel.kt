@@ -28,7 +28,7 @@ class ViewModel @Inject constructor(private val repository: IRepository) : ViewM
     private var offset = 0
     @Synchronized
     fun loadTrendingImages(limit: Int = AppConstants.LOAD_MORE_ITEMS_COUNT) {
-        if (loadingImages) return // only process one loading  images task
+        if (loadingImages || limit <= 0) return // only process one loading  images task
 
         loadingImages = true
         repository.getTrendingImages(limit = limit, offset = offset).let {
