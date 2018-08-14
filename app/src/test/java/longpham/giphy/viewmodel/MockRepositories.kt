@@ -8,7 +8,7 @@ import longpham.giphy.repository.IRepository
 import longpham.giphy.util.AppConstants
 import javax.inject.Inject
 
-class MockRepository @Inject constructor() : IRepository {
+class MockRepository: IRepository {
 
     override fun getRandomImage(tag: String): LiveData<GiphyImagesObject> {
         val liveData = MutableLiveData<GiphyImagesObject>()
@@ -31,5 +31,19 @@ class MockRepository @Inject constructor() : IRepository {
         val gifImage = GiphyImage(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif", with = 0, height = 0)
         val image = GiphyImagesObject(stillImage = stillImage, gifImage = gifImage, tag = "tag")
 
+    }
+}
+
+class NoDataRepository: IRepository {
+    override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImagesObject>> {
+        val liveData = MutableLiveData<List<GiphyImagesObject>>()
+        liveData.value = null
+        return liveData
+    }
+
+    override fun getRandomImage(tag: String): LiveData<GiphyImagesObject> {
+        val liveData = MutableLiveData<GiphyImagesObject>()
+        liveData.value = null
+        return liveData
     }
 }
