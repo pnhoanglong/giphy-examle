@@ -36,7 +36,9 @@ fun Media?.toGiphyImage(): GiphyImagesObject? {
 }
 
 
-fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
+fun Images?.toGiphyImage(imageTag: String): GiphyImagesObject? {
+    if (this == null) return null
+
     val stillImage: GiphyImage?
     val gifImage: GiphyImage?
 
