@@ -1,5 +1,6 @@
 package longpham.giphy.models
 
+import com.giphy.sdk.core.models.Image
 import com.giphy.sdk.core.models.Images
 import com.giphy.sdk.core.models.Media
 import longpham.giphy.util.GiphyConstants
@@ -35,17 +36,17 @@ fun Media?.toGiphyImage(): GiphyImagesObject? {
 }
 
 
-private fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
-    var stillImage: GiphyImage?
-    var gifImage: GiphyImage?
+fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
+    val stillImage: GiphyImage?
+    val gifImage: GiphyImage?
 
     val giphyStillImages = listOf(fixedWidthStill, fixedWidthSmallStill, fixedHeightStill,
             fixedHeightSmallStill, downsizedStill, originalStill)
-    stillImage = createImageModel(giphyStillImages)
+    stillImage = giphyStillImages.createImageModel()
 
     val giphyGifImages = listOf(downsized, downsizedSmall, downsizedMedium, downsizedLarge,
             fixedWidth, fixedHeight, original, fixedWidthDownsampled, fixedHeightDownsampled)
-    gifImage = createImageModel(giphyGifImages)
+    gifImage = giphyGifImages.createImageModel()
     if (stillImage == null || gifImage == null) {
         return null
     }
@@ -55,10 +56,9 @@ private fun Images.toGiphyImage(imageTag: String): GiphyImagesObject? {
 /**
  * Create a Image Model from the first not null Giphy Images
  */
-private fun createImageModel(giphyImages: List<com.giphy.sdk.core.models.Image?>): GiphyImage? {
-    var imageModel: GiphyImage? = null
-    giphyImages.firstOrNull {!it?.gifUrl.isNullOrEmpty()}?.let {
-        imageModel = GiphyImage(url = it.gifUrl, with = it.width, height = it.height)
+fun List<Image?>.createImageModel(): GiphyImage? {
+    firstOrNull {!it?.gifUrl.isNullOrEmpty()}?.let {
+        return GiphyImage(url = it.gifUrl, with = it.width, height = it.height)
     }
-    return imageModel
+    return null
 }
