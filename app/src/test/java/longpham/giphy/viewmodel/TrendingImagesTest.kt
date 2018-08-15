@@ -4,15 +4,25 @@ import junit.framework.Assert.assertNotNull
 import longpham.giphy.BaseViewModelTestSuite
 import longpham.giphy.createTrendingImagesObserver
 import longpham.giphy.models.GiphyImagesObject
+import longpham.giphy.ui.image.RandomImageViewModel
+import longpham.giphy.ui.trending.TrendingViewModel
 import longpham.giphy.util.AppConstants
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mockito.*
 
 @RunWith(JUnit4::class)
-class TrendingImagesTest: BaseViewModelTestSuite(MockRepository()) {
+class TrendingImagesTest: BaseViewModelTestSuite() {
+    private lateinit var viewModel: TrendingViewModel
+    private lateinit var noDataViewModel: TrendingViewModel
 
+    @Before
+    fun init(){
+        viewModel = TrendingViewModel(MockRepository())
+        noDataViewModel = TrendingViewModel(NoDataRepository())
+    }
     @Test
     fun testLiveDataNotNull(){
         assertNotNull(viewModel.images)
@@ -33,7 +43,7 @@ class TrendingImagesTest: BaseViewModelTestSuite(MockRepository()) {
         val observer = viewModel.createTrendingImagesObserver()
         viewModel.loadTrendingImages()
         val expectedImages = mutableListOf<GiphyImagesObject>()
-        repeat(AppConstants.LOAD_MORE_ITEMS_COUNT) {
+        repeat(AppConstants.ITEMS_PER_REQUEST) {
             expectedImages.add(MockRepository.image)
         }
         verify(observer).onChanged(expectedImages)
@@ -52,5 +62,12 @@ class TrendingImagesTest: BaseViewModelTestSuite(MockRepository()) {
             expectedImages.add(MockRepository.image)
         }
         verify(observer).onChanged(expectedImages)
+    }
+
+    @Test
+    fun testTrendingImageWithNoDataRepo(){
+        val observer = noDataViewModel.createTrendingImagesObserver()
+        noDataViewModel.loadTrendingImages(10)
+        verify(observer).onChanged(null)
     }
 }
