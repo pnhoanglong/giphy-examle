@@ -19,13 +19,15 @@ import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
-import longpham.giphy.ui.image.ImageFragment
+import longpham.giphy.ui.image.RandomImageFragment
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
 import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
+    private val PRELOAD_ADHEAD_ITEMS = 10
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -37,7 +39,6 @@ class TrendingFragment : BaseFragment(), Injectable {
     private lateinit var binding: TrendingFragmentBinding
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private val PRELOAD_ADHEAD_ITEMS = 10
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -45,7 +46,7 @@ class TrendingFragment : BaseFragment(), Injectable {
                 .get(ViewModel::class.java)
         recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf()) { clickedItem ->
             viewModel.selectedImage = clickedItem
-            startImageFragment()
+            startImageFragment(clickedItem)
         }
         binding.imageRecyclerView.adapter = recyclerViewAdapter
 
@@ -94,7 +95,6 @@ class TrendingFragment : BaseFragment(), Injectable {
                         //No need to load more item
                         return
                     }
-
                     viewModel.loadTrendingImages()
                     binding.progressBar.apply {
                         visibility = View.VISIBLE
@@ -109,8 +109,12 @@ class TrendingFragment : BaseFragment(), Injectable {
        return  RecyclerViewPreloader<GiphyImagesObject>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
     }
 
-    private fun startImageFragment() {
-        val imageFragment = ImageFragment.getInstance()
+    private fun startImageFragment(selectedImage: GiphyImagesObject) {
+        val imageFragment = RandomImageFragment.getInstance()
+        imageFragment.arguments = Bundle().apply {
+            putString(RandomImageFragment.KEY_SELECTED_IMAGE_URL, selectedImage.gifImage.url)
+            putString(RandomImageFragment.KEY_SELECTED_IMAGE_TAG, selectedImage.tag)
+        }
         startNewFragment(imageFragment)
     }
 
