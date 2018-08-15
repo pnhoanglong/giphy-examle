@@ -21,6 +21,7 @@ import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.util.AppConstants
+import longpham.giphy.util.LogUtil
 import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
@@ -63,15 +64,13 @@ class TrendingFragment : BaseFragment(), Injectable {
             addOnScrollListener(createGlideRecyclerViewIntegrationScrollListener())
         }
 
-        // Load Images from server
-        viewModel.loadTrendingImages(requestItemsCount = AppConstants.INIT_LOAD_ITEMS_COUNT)
-
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isNetworkConnected ->
-            // Load more image if network changed to connected
-            if (!isNetworkConnected!!){
+            // Load trending images if network is connected and list is empty
+            if (!isNetworkConnected!! || recyclerViewAdapter.itemCount > 0){
                 return@Observer
             }
+            LogUtil.e("Force load trending image")
             viewModel.loadTrendingImages(requestItemsCount = AppConstants.ITEMS_PER_REQUEST)
         })
     }
