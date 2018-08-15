@@ -16,22 +16,24 @@ import com.bumptech.glide.request.target.Target
 import longpham.giphy.R
 import longpham.giphy.databinding.ImageFragmentBinding
 import longpham.giphy.di.Injectable
-import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
 import longpham.giphy.viewmodel.ViewModel
+import java.util.*
 import javax.inject.Inject
-class ImageFragment : BaseFragment(), Injectable {
+class RandomImageFragment : BaseFragment(), Injectable {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ViewModel
 
     private lateinit var binding: ImageFragmentBinding
 
-    private var needToLoadNextImage = true
     private var currentImageTag = ""
+    private var timer: Timer? = null
+    private var loadingRandomImageDelay = AppConstants.RANDOM_IMAGE_INTERVAL
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.image_fragment, container, false)
@@ -44,46 +46,45 @@ class ImageFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
-                .get(ViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get((ViewModel::class.java))
 
-        // Display selected image in trending screen
-        viewModel.selectedImage?.let {
-            displayImage(it)
+        arguments?.let {
+             it.getString(KEY_SELECTED_IMAGE_URL)?.apply {
+                 LogUtil.d("Display from trending image: $this")
+                 displayImage(this)
+             }
+            currentImageTag = it.getString(KEY_SELECTED_IMAGE_TAG) ?: ""
         }
 
         //Observer random image live data
         viewModel.randomImageLiveData.observe(this, Observer { image ->
-            needToLoadNextImage = true
-            if (image == null) return@Observer
-            LogUtil.d("Display random image: ${image.gifImage.url}")
-            displayImage(image)
-            scheduleLoadRandomImage()
-       })
+            if (image != null) {
+                LogUtil.d("Display random image: ${image.gifImage.url}")
+                currentImageTag = image.tag
+                displayImage(image.gifImage.url)
+            }
+        })
 
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isConnected ->
             if (!isConnected!!) {
-                needToLoadNextImage = false
+                timer?.cancel()
+                loadingRandomImageDelay = 0
                 return@Observer
             }
-            if (needToLoadNextImage) {
-                LogUtil.i("Network connected -> Load random image")
-                needToLoadNextImage = true
-                scheduleLoadRandomImage()
-            }
-        })
 
+            timer = Timer()
+            timer?.schedule(object : TimerTask() {
+                override fun run() {
+                    viewModel.imageTagLiveData.postValue(currentImageTag)
+                }
+            }, loadingRandomImageDelay, AppConstants.RANDOM_IMAGE_INTERVAL)
+        })
     }
 
-    private fun scheduleLoadRandomImage() {
-        // Do not schedule the next loading if fragment is detached or network is disconnected
-        if (isDetached || !needToLoadNextImage) return
-        needToLoadNextImage = false
-        binding.root.postDelayed({
-            viewModel.imageTagLiveData.value = currentImageTag
-            scheduleLoadRandomImage()
-        }, AppConstants.RANDOM_IMAGE_INTERVAL)
+    override fun onStop() {
+        super.onStop()
+        timer?.cancel()
     }
 
     private val glideListener = object: RequestListener<Drawable>{
@@ -100,15 +101,17 @@ class ImageFragment : BaseFragment(), Injectable {
         viewModel.imageTagLiveData.value = currentImageTag
     }
 
-        private fun displayImage(giphyImagesObject: GiphyImagesObject) = giphyImagesObject.also {
-            currentImageTag = it.tag
-            GlideApp.with(this)
-                    .load(it.gifImage.url)
-                    .fitCenter().listener(glideListener)
-                    .into(binding.imageView)
-        }
+    private fun displayImage(imageUrl: String) {
+        GlideApp.with(this)
+                .load(imageUrl)
+                .fitCenter().listener(glideListener)
+                .into(binding.imageView)
+    }
 
-        companion object {
-        fun getInstance(): ImageFragment = ImageFragment()
+    companion object {
+        const val KEY_SELECTED_IMAGE_URL = "image_url"
+        const val KEY_SELECTED_IMAGE_TAG = "image_tag"
+
+        fun getInstance() = RandomImageFragment()
     }
 }

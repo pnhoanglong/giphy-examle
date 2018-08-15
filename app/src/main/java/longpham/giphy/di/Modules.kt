@@ -11,7 +11,7 @@ import dagger.multibindings.IntoMap
 import longpham.giphy.MainActivity
 import longpham.giphy.repository.GiphyRepository
 import longpham.giphy.repository.IRepository
-import longpham.giphy.ui.image.ImageFragment
+import longpham.giphy.ui.image.RandomImageFragment
 import longpham.giphy.ui.trending.TrendingFragment
 import longpham.giphy.util.GiphyConstants
 import longpham.giphy.viewmodel.ViewModel
@@ -43,7 +43,7 @@ abstract class FragmentBuilderModule {
     abstract fun contributeTrendingFragment(): TrendingFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeImageFragment(): ImageFragment
+    abstract fun contributeImageFragment(): RandomImageFragment
 }
 
 @Module
