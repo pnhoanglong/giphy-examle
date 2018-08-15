@@ -72,7 +72,7 @@ class TrendingFragment : BaseFragment(), Injectable {
             if (!isNetworkConnected!!){
                 return@Observer
             }
-            viewModel.loadTrendingImages(requestItemsCount = AppConstants.INIT_LOAD_ITEMS_COUNT)
+            viewModel.loadTrendingImages(requestItemsCount = AppConstants.ITEMS_PER_REQUEST)
         })
     }
 
@@ -88,10 +88,10 @@ class TrendingFragment : BaseFragment(), Injectable {
     }
 
     private fun createInfiniteScrollListener(): InfiniteScrollListener =
-            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.INIT_LOAD_ITEMS_COUNT,
+            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.ITEMS_PER_REQUEST,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
-                    if (firstVisibleItemPosition + AppConstants.LOAD_MORE_ITEMS_COUNT <= recyclerViewAdapter.items.size){
+                    if (firstVisibleItemPosition + AppConstants.ITEMS_PER_REQUEST <= recyclerViewAdapter.items.size){
                         //No need to load more item
                         return
                     }

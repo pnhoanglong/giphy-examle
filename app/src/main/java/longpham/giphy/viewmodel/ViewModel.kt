@@ -40,7 +40,7 @@ class ViewModel @Inject constructor(private val repository: IRepository) : ViewM
     }
 
     @Synchronized
-    fun loadTrendingImages(requestItemsCount: Int = AppConstants.LOAD_MORE_ITEMS_COUNT) {
+    fun loadTrendingImages(requestItemsCount: Int = AppConstants.ITEMS_PER_REQUEST) {
         if (requestItemsCount <= 0) return // only process one loading  images task
         limit = requestItemsCount
         offset = images.value?.size ?: 0
