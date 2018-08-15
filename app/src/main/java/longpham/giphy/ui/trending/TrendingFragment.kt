@@ -21,7 +21,6 @@ import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.ImageFragment
 import longpham.giphy.util.AppConstants
-import longpham.giphy.util.LogUtil
 import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
@@ -44,7 +43,7 @@ class TrendingFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
                 .get(ViewModel::class.java)
         recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf()) { clickedItem ->
-            viewModel.setSelectedImage(image = clickedItem)
+            viewModel.selectedImage = clickedItem
             startImageFragment()
         }
         binding.imageRecyclerView.adapter = recyclerViewAdapter
@@ -52,7 +51,7 @@ class TrendingFragment : BaseFragment(), Injectable {
         // Observer images live data
         viewModel.images.observe(this, Observer { images ->
             images?.let {
-                recyclerViewAdapter.items = it
+                recyclerViewAdapter.items.addAll(it)
                 recyclerViewAdapter.notifyDataSetChanged()
                 binding.progressBar.visibility = View.GONE
             }
@@ -65,7 +64,7 @@ class TrendingFragment : BaseFragment(), Injectable {
         }
 
         // Load Images from server
-        viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
+        viewModel.loadTrendingImages(requestItemsCount = AppConstants.INIT_LOAD_ITEMS_COUNT)
 
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isNetworkConnected ->
@@ -73,7 +72,7 @@ class TrendingFragment : BaseFragment(), Injectable {
             if (!isNetworkConnected!!){
                 return@Observer
             }
-            viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
+            viewModel.loadTrendingImages(requestItemsCount = AppConstants.INIT_LOAD_ITEMS_COUNT)
         })
     }
 

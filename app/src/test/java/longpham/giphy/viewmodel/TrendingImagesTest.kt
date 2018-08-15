@@ -21,9 +21,9 @@ class TrendingImagesTest: BaseViewModelTestSuite(MockRepository()) {
     @Test
     fun testInvalidLoadingTrendingImage(){
         val observer = viewModel.createTrendingImagesObserver()
-        viewModel.loadTrendingImages(limit = -1)
+        viewModel.loadTrendingImages(requestItemsCount = -1)
         verifyNoMoreInteractions(observer)
-        viewModel.loadTrendingImages(limit = 0)
+        viewModel.loadTrendingImages(requestItemsCount = 0)
         verifyNoMoreInteractions(observer)
 
     }

@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 class ViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
 
+    var selectedImage: GiphyImagesObject? = null
     /**
      * Initialize trending image live data
      */
@@ -34,7 +35,7 @@ class ViewModel @Inject constructor(private val repository: IRepository) : ViewM
     val imageTagLiveData = MutableLiveData<String>()
 
     // Random image live data
-    val selectedImage: LiveData<GiphyImagesObject> = Transformations.switchMap(imageTagLiveData) { imageTag ->
+    val randomImageLiveData: LiveData<GiphyImagesObject> = Transformations.switchMap(imageTagLiveData) { imageTag ->
         repository.getRandomImage(imageTag)
     }
 
