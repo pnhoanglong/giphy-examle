@@ -22,7 +22,6 @@ import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.RandomImageFragment
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
-import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
@@ -34,7 +33,7 @@ class TrendingFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var repository: IRepository
 
-    private lateinit var viewModel: ViewModel
+    private lateinit var viewModel: TrendingViewModel
 
     private lateinit var binding: TrendingFragmentBinding
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
@@ -42,10 +41,9 @@ class TrendingFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
-                .get(ViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(TrendingViewModel::class.java)
         recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf()) { clickedItem ->
-            viewModel.selectedImage = clickedItem
             startImageFragment(clickedItem)
         }
         binding.imageRecyclerView.adapter = recyclerViewAdapter

@@ -1,4 +1,4 @@
-package longpham.giphy.viewmodel
+package longpham.giphy.ui.trending
 
 import android.arch.lifecycle.*
 import android.arch.lifecycle.Observer
@@ -9,9 +9,7 @@ import longpham.giphy.util.AppConstants
 import longpham.giphy.util.GiphyConstants
 import javax.inject.Inject
 
-class ViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
-
-    var selectedImage: GiphyImagesObject? = null
+class TrendingViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
     /**
      * Initialize trending image live data
      */
@@ -25,18 +23,6 @@ class ViewModel @Inject constructor(private val repository: IRepository) : ViewM
     // Trending images live data
      val images: LiveData<List<GiphyImagesObject>> = Transformations.switchMap(offsetLiveData) { offset ->
        repository.getTrendingImages(limit = limit, offset = offset)
-    }
-
-    /**
-     * Initialize random image live data
-     */
-    // Image tag used for giphy random api
-    // To execute load next ramdom image, the `view` change image tag value
-    val imageTagLiveData = MutableLiveData<String>()
-
-    // Random image live data
-    val randomImageLiveData: LiveData<GiphyImagesObject> = Transformations.switchMap(imageTagLiveData) { imageTag ->
-        repository.getRandomImage(imageTag)
     }
 
     @Synchronized
