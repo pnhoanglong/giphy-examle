@@ -42,12 +42,15 @@ class TrendingImagesTest: BaseViewModelTestSuite(MockRepository()) {
     @Test
     fun testLoadingTrendingImageTwice(){
         val observer = viewModel.createTrendingImagesObserver()
+        viewModel.loadTrendingImages(1)
+        viewModel.loadTrendingImages(2)
+        //Verify the first onChanged
+        verify(observer).onChanged(mutableListOf(MockRepository.image))
+        //Verify the second onChanged
         val expectedImages = mutableListOf<GiphyImagesObject>()
-        repeat(15) {
+        repeat(2) {
             expectedImages.add(MockRepository.image)
         }
-        viewModel.loadTrendingImages(5)
-        viewModel.loadTrendingImages(10)
-        verify(observer, times(2)).onChanged(expectedImages)
+        verify(observer).onChanged(expectedImages)
     }
 }

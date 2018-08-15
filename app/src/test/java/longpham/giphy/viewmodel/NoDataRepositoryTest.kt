@@ -6,6 +6,7 @@ import longpham.giphy.createTrendingImagesObserver
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 
 @RunWith(JUnit4::class)
@@ -15,14 +16,14 @@ class NoDataRepositoryTest: BaseViewModelTestSuite(NoDataRepository()) {
     fun testTrendingImage(){
         val observer = viewModel.createTrendingImagesObserver()
         viewModel.loadTrendingImages(10)
-        verifyNoMoreInteractions(observer)
+        verify(observer).onChanged(null)
     }
 
     @Test
     fun testRandomImage(){
         val observer = viewModel.createSelectedImageObserver()
-        viewModel.getNextRandomImage()
-        verifyNoMoreInteractions(observer)
+        viewModel.imageTagLiveData.value = "image"
+        verify(observer).onChanged(null)
     }
 }
 

@@ -45,12 +45,12 @@ inline fun <reified T> mock(): T = Mockito.mock(T::class.java)
 
 
 fun ViewModel.createTrendingImagesObserver() =
-        mock<Observer<MutableList<GiphyImagesObject>>>().also {
+        mock<Observer<List<GiphyImagesObject>>>().also {
             images.observeForever(it)
         }
 
 fun ViewModel.createSelectedImageObserver() =
         mock<Observer<GiphyImagesObject>>().also {
-            selectedImage.observeForever(it)
+            randomImageLiveData.observeForever(it)
         }
 

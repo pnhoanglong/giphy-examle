@@ -1,5 +1,6 @@
 package longpham.giphy.viewmodel
 
+import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import longpham.giphy.BaseViewModelTestSuite
 import longpham.giphy.createSelectedImageObserver
@@ -19,15 +20,14 @@ class RandomImageTest: BaseViewModelTestSuite(MockRepository()) {
 
     @Test
     fun testSelectingImage(){
-        val observer = viewModel.createSelectedImageObserver()
-        viewModel.setSelectedImage(MockRepository.image)
-        verify(observer).onChanged(MockRepository.image)
+        viewModel.selectedImage = MockRepository.image
+        assertEquals(viewModel.selectedImage, MockRepository.image)
     }
 
     @Test
     fun testLoadingRandomImage(){
         val observer = viewModel.createSelectedImageObserver()
-        viewModel.getNextRandomImage()
+        viewModel.imageTagLiveData.value = "tag"
         verify(observer).onChanged(MockRepository.image)
 
     }
