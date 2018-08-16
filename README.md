@@ -31,7 +31,7 @@ The [CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle) is used to appl
 This section will list out some main libraries application is using.
 
 ## Android Architecture Components
-* Android architecture components are part of Android Jetpack. They are a collection of libraries that help you design robust, testable, and maintainable apps.
+* [Android architecture components](https://developer.android.com/topic/libraries/architecture) are part of Android Jetpack. They are a collection of libraries that help you design robust, testable, and maintainable apps.
   * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) is used to build observable data object, it helps the View classess notified to update UI when data changes.
   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) is used a ViewModel base classe in MVVM architecture. It stores UI-related data that is not destroyed on app rotations.
   * [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle) is to automatically handle Android component (e.g.: activity, fragment) lifecycle related events. For example, it eliminate the crash because AsyncTask.onPostExecuted() is triggered when fragment is stopped.
@@ -57,7 +57,8 @@ git clone git@github.com:pnhoanglong/giphy-examle.git
   * SDK Platform Android 8.1 (API level 27)
   * Android SDK Platform-Tools
   * Android SDK Tools
-  * Google Play Service * ConstrainLayout for Android
+  * Google Play Service 
+  * ConstrainLayout for Android
   * Solver for ConstrainLayout
   * Android Support Repository
   * Google Repository
