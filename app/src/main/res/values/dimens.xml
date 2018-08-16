@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="loading_image_side">100dp</dimen>
+    <dimen name="vertical_image_margin">10dp</dimen>
+</resources>

@@ -1,0 +1,93 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+
+ext {
+    min_sdk = 16
+    compile_sdk = 27
+    support_library_version = '27.1.1'
+    dagger_version = '2.16'
+    glide_version =  '4.7.1'
+    constraint_layout_version = '1.1.2'
+    architecture_components_version = '1.1.1'
+    junit_version = '4.12'
+    mockito_version = '2.7.19'
+    giphy_sdk_version = '1.0.2'
+}
+
+android {
+    compileSdkVersion compile_sdk
+    defaultConfig {
+        applicationId "longpham.giphy"
+        minSdkVersion min_sdk
+        targetSdkVersion compile_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support:design:$support_library_version"
+    //Constrain layout
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    kapt "com.android.databinding:compiler:$build_tool_version"
+
+   // dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // giphy api
+    implementation("com.giphy.sdk:core:$giphy_sdk_version@aar") {
+        transitive = true
+    }
+
+    // Glide show image
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    implementation ("com.github.bumptech.glide:recyclerview-integration:$glide_version") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    //Architecture components
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$architecture_components_version"
+    // Support library depends on this lightweight import
+    implementation "android.arch.lifecycle:runtime:$architecture_components_version"
+    kapt "android.arch.lifecycle:compiler:$architecture_components_version"
+
+    // UNIT TESTING
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    // Test helpers for LiveData
+    testImplementation ("android.arch.core:core-testing:$architecture_components_version", {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+    })
+
+    // ANDROID TESTING
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

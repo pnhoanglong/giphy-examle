@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!--Because this is a demo app, these lint error can be ignored-->
+    <issue id="GifUsage" severity="ignore" />
+    <issue id="IconLocation" severity="ignore" />
+    <issue id="GoogleAppIndexingWarning" severity="ignore" />
+    <issue id="ContentDescription" severity="ignore" />
+
+    <!--These resources are inuse-->
+    <issue id="UnusedResources" severity="ignore" />
+</lint>
