@@ -31,7 +31,7 @@ The [CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle) is used to appl
 This section will list out some main libraries application is using.
 
 ## Android Architecture Components
-* Android architecture components are part of Android Jetpack. They are a collection of libraries that help you design robust, testable, and maintainable apps.
+* [Android architecture components](https://developer.android.com/topic/libraries/architecture) are part of Android Jetpack. They are a collection of libraries that help you design robust, testable, and maintainable apps.
   * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) is used to build observable data object, it helps the View classess notified to update UI when data changes.
   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) is used a ViewModel base classe in MVVM architecture. It stores UI-related data that is not destroyed on app rotations.
   * [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle) is to automatically handle Android component (e.g.: activity, fragment) lifecycle related events. For example, it eliminate the crash because AsyncTask.onPostExecuted() is triggered when fragment is stopped.
