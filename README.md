@@ -16,8 +16,8 @@ Giphy is a demo application showing images from [GIPHY](https://giphy.com/). It 
 * Android Studio v3.1.3
 * Android SDK
 ### Building configurations
-* Gradle 4.4
-* Gradle Android Buildtool 3.1.3
+* Gradle v4.4
+* Gradle Android Buildtool v3.1.3
 * Android SDK API 27
 ### Setup
 1. Clone this project:
