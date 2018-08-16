@@ -40,14 +40,6 @@ git clone git@github.com:pnhoanglong/giphy-examle.git
 
 ## Application Architecture
 
-### Structure
-![application structure](https://github.com/pnhoanglong/giphy-examle/blob/readme/screenshoot/application_structure.png)
-
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
-
 ### Implementation
 
 ### Libraries:
