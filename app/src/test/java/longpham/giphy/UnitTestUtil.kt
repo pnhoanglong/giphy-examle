@@ -19,7 +19,7 @@ package longpham.giphy
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import longpham.giphy.models.GiphyImagesObject
-import longpham.giphy.ui.image.RandomImageViewModel
+import longpham.giphy.ui.randomimage.RandomImageViewModel
 import longpham.giphy.ui.trending.TrendingViewModel
 import org.junit.Rule
 import org.mockito.Mockito

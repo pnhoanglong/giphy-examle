@@ -19,7 +19,7 @@ import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
-import longpham.giphy.ui.image.RandomImageFragment
+import longpham.giphy.ui.randomimage.RandomImageFragment
 import longpham.giphy.util.AppConstants
 import javax.inject.Inject
 

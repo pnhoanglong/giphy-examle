@@ -4,7 +4,6 @@ import junit.framework.Assert.assertNotNull
 import longpham.giphy.BaseViewModelTestSuite
 import longpham.giphy.createTrendingImagesObserver
 import longpham.giphy.models.GiphyImagesObject
-import longpham.giphy.ui.image.RandomImageViewModel
 import longpham.giphy.ui.trending.TrendingViewModel
 import longpham.giphy.util.AppConstants
 import org.junit.Before

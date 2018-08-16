@@ -3,7 +3,7 @@ package longpham.giphy.viewmodel
 import junit.framework.Assert.assertNotNull
 import longpham.giphy.BaseViewModelTestSuite
 import longpham.giphy.createSelectedImageObserver
-import longpham.giphy.ui.image.RandomImageViewModel
+import longpham.giphy.ui.randomimage.RandomImageViewModel
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

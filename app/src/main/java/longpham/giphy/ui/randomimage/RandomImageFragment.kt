@@ -1,4 +1,4 @@
-package longpham.giphy.ui.image
+package longpham.giphy.ui.randomimage
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider

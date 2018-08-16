@@ -12,8 +12,8 @@ import dagger.multibindings.IntoMap
 import longpham.giphy.MainActivity
 import longpham.giphy.repository.GiphyRepository
 import longpham.giphy.repository.IRepository
-import longpham.giphy.ui.image.RandomImageFragment
-import longpham.giphy.ui.image.RandomImageViewModel
+import longpham.giphy.ui.randomimage.RandomImageFragment
+import longpham.giphy.ui.randomimage.RandomImageViewModel
 import longpham.giphy.ui.trending.TrendingFragment
 import longpham.giphy.ui.trending.TrendingViewModel
 import longpham.giphy.util.GiphyConstants
