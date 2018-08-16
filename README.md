@@ -57,7 +57,8 @@ git clone git@github.com:pnhoanglong/giphy-examle.git
   * SDK Platform Android 8.1 (API level 27)
   * Android SDK Platform-Tools
   * Android SDK Tools
-  * Google Play Service * ConstrainLayout for Android
+  * Google Play Service 
+  * ConstrainLayout for Android
   * Solver for ConstrainLayout
   * Android Support Repository
   * Google Repository
