@@ -17,7 +17,6 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.trending.TrendingFragment
-import longpham.giphy.util.LogUtil
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -66,7 +65,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
         fun informNetworkConnectivity(connected: Boolean) {
-            LogUtil.d("Network Connected: $connected")
             networkErrorTextView.visibility = if (connected) View.GONE else View.VISIBLE
         }
 
@@ -78,7 +76,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            LogUtil.i("Network state changed")
             checkNetworkConnection()
         }
     }

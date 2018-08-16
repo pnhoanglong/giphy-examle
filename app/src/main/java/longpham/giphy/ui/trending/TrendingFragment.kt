@@ -21,7 +21,6 @@ import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
 import longpham.giphy.ui.image.RandomImageFragment
 import longpham.giphy.util.AppConstants
-import longpham.giphy.util.LogUtil
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
@@ -69,7 +68,6 @@ class TrendingFragment : BaseFragment(), Injectable {
             if (!isNetworkConnected!! || recyclerViewAdapter.itemCount > 0){
                 return@Observer
             }
-            LogUtil.e("Force load trending image")
             viewModel.loadTrendingImages(requestItemsCount = AppConstants.ITEMS_PER_REQUEST)
         })
     }

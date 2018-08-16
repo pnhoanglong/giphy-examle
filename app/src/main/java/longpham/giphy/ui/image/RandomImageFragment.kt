@@ -49,7 +49,6 @@ class RandomImageFragment : BaseFragment(), Injectable {
 
         arguments?.let {
              it.getString(KEY_SELECTED_IMAGE_URL)?.apply {
-                 LogUtil.d("Display from trending image: $this")
                  displayImage(this)
              }
             currentImageTag = it.getString(KEY_SELECTED_IMAGE_TAG) ?: ""

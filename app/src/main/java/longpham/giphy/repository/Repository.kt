@@ -6,7 +6,6 @@ import com.giphy.sdk.core.network.api.GPHApi
 import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.models.toGiphyImage
 import longpham.giphy.util.GiphyConstants
-import longpham.giphy.util.LogUtil
 import longpham.giphy.util.logException
 import javax.inject.Inject
 
@@ -26,7 +25,6 @@ interface IRepository {
 
 class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImagesObject>> {
-        LogUtil.i("getTrendingImages: limit=$limit offset=$offset")
         val liveData = MutableLiveData<List<GiphyImagesObject>>()
         giphyApi.trending(GiphyConstants.IMAGE_TYPE, limit, offset, GiphyConstants.RATING) trendingApi@{ listMediaResponse, throwable ->
             throwable?.logException()
@@ -42,7 +40,6 @@ class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     }
 
     override fun getRandomImage(tag: String): LiveData<GiphyImagesObject> {
-        LogUtil.i("getRandomImage")
         val liveData = MutableLiveData<GiphyImagesObject>()
         giphyApi.random(tag, GiphyConstants.IMAGE_TYPE, GiphyConstants.RATING) randomApi@{ mediaResponse, throwable ->
             throwable?.logException()

@@ -23,7 +23,6 @@ class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: Mutabl
     override fun onBindViewHolder(holder: DataBoundViewHolder<ImageListItemViewBinding>, position: Int) {
         val imageView = holder.binding.trendingImageView
         val imageUrl = items[position].stillImage.url
-        LogUtil.d("LoadImageUrl: $imageUrl")
         buildLoadImageRequest(fragment = fragment, imageUrl = imageUrl).into(imageView)
         holder.binding.root.setOnClickListener{
             itemViewOnClickListener?.invoke(items[position])
