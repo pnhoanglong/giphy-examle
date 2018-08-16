@@ -1,6 +1,6 @@
 # Giphy
 
-**CircleCI build status: **[![CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle/tree/develop.svg?style=svg)](https://circleci.com/gh/pnhoanglong/giphy-examle/tree/develop)
+**CircleCI build status:** [![CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle/tree/develop.svg?style=svg)](https://circleci.com/gh/pnhoanglong/giphy-examle/tree/develop)
 
 Giphy is a demo application showing images from [GIPHY](https://giphy.com/). It contains two screens:
 * Screen 1:
