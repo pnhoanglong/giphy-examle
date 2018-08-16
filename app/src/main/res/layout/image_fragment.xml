@@ -9,7 +9,7 @@
 
         <ImageView
             android:id="@+id/loadingImageView"
-            android:layout_width="@dimen/loading_image_side"
+           android:layout_width="@dimen/loading_image_side"
             android:layout_height="@dimen/loading_image_side"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
