@@ -37,8 +37,20 @@ git clone git@github.com:pnhoanglong/giphy-examle.git
 3. Wait for Gradle sync to finish.
 
 4. To run the app, simply click **Run**  ![alt text](https://camo.githubusercontent.com/4b94cee2759faf24f54eedd56b9c725f6f8996f3/68747470733a2f2f646576656c6f7065722e616e64726f69642e636f6d2f696d616765732f746f6f6c732f61732d72756e2e706e67). If you are prompted to select a device, choose one where you want the application to be installed. This will build and generate an apk file which will then be installed to your device.
+
 ## Application Architecture
 
+### Structure
+![application structure](https://github.com/pnhoanglong/giphy-examle/blob/readme/screenshoot/application_structure.png)
+
+Markdown | Less | Pretty
+--- | --- | ---
+*Still* | `renders` | **nicely**
+1 | 2 | 3
+
+### Implementation
+
+### Libraries:
 
 ## Demo
 
