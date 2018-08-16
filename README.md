@@ -74,8 +74,8 @@ git clone git@github.com:pnhoanglong/giphy-examle.git
 
 ### Screenshots
 
-![Screen 1](https://github.com/pnhoanglong/giphy-examle/blob/readme/screenshoot/screen1.png) ![Screen 2](https://github.com/pnhoanglong/giphy-examle/blob/readme/screenshoot/screen2.png)
+![Screen 1](https://github.com/pnhoanglong/giphy-examle/blob/master/screenshoot/screen1.png) ![Screen 2](https://github.com/pnhoanglong/giphy-examle/blob/master/screenshoot/screen2.png)
 
 ### Video
-[![Video](https://github.com/pnhoanglong/giphy-examle/blob/readme/screenshoot/videothumbnail.png)](https://vimeo.com/285134305)
+[![Video](https://github.com/pnhoanglong/giphy-examle/blob/master/screenshoot/videothumbnail.png)](https://vimeo.com/285134305)
 
