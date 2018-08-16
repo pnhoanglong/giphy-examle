@@ -6,7 +6,7 @@ Giphy is a demo application showing images from [GIPHY](https://giphy.com/). It 
 * Screen 1:
   * Display lasted  images from Giphy by getting data from Giphy’s Trending API.
   * The images are displayed in still format.
-  * An infinite scrolling mechanism is implemented where, whenever the user scrolls  to the bottom of the list, it should be populated with more images.
+  * An infinite scrolling mechanism is implemented where, whenever the user scrolls to the bottom of the list, it should be populated with more images.
 * Screen 2:
   * Upon tapping on any of the images in Screen 1, this new screen should open up, which displays the animated version of this GIF.
   * This screen should also make use of Giphy’s Random API to automatically load a new random animated GIF (in the file format of your liking) every 10 seconds.
@@ -17,15 +17,15 @@ Giphy is a demo application showing images from [GIPHY](https://giphy.com/). It 
 ### Programing Language:
 Kotlin v1.2.30
 ### Implementation
-The architecture of this application is **Model-View-ViewModel**. This MVVM architecture is choose because:
+The architecture of this application is **Model-View-ViewModel**. This MVVM architecture is chosen because:
 * Separation the responsibility of the classes: The Android framework Activity and Fragment classes just show and update UI, The Model classes store data which is used to display UI (as well as processing their data); and The ViewModel classes provide the data for the view by exposing their model. This separation makes it easier to maintain and extend application.
-* Testability: In MVVM architecture, ViewModel classes do not reference the View class, which make them independent from Android framework class. It helps test application easier because ViewModel classes usually handle logic.
+* Testability: In MVVM architecture, ViewModel classes do not reference the View classes, which make them independent from Android framework classes. It helps test application easier because ViewModel classes usually handle logic.
 
 The reactive programing is also applied in this project: The ViewModel class provide `observable` data for the View class. If data changes, the view which observe it will be notified to update UI.
 
 The dependencies injection technique is used in application, which helps de-coupling the classes. A class does not create instances of their dependent classes, they are injected.
 
-The [CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle) is used to apply continuous integration in this application. The curret configuration is to run `lint` and `unitTest` when there is a new commit pushed to github repository.
+The [CircleCI](https://circleci.com/gh/pnhoanglong/giphy-examle) is used to apply continuous integration in this project. The current configuration is to run `lint` and `unitTest` when there is a new commit pushed to github repository.
 
 ### Libraries:
 This section will list out some main libraries application is using.
@@ -33,11 +33,8 @@ This section will list out some main libraries application is using.
 ## Android Architecture Components
 * Android architecture components are part of Android Jetpack. They are a collection of libraries that help you design robust, testable, and maintainable apps.
   * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) is used to build observable data object, it helps the View classess notified to update UI when data changes.
-  * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) is used a ViewModel base classes in MVVM architecture. It stores UI-related data that isn't destroyed on app rotations
+  * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) is used a ViewModel base classe in MVVM architecture. It stores UI-related data that is not destroyed on app rotations.
   * [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle) is to automatically handle Android component (e.g.: activity, fragment) lifecycle related events. For example, it eliminate the crash because AsyncTask.onPostExecuted() is triggered when fragment is stopped.
-
-
-
 * [Dagger](https://google.github.io/dagger/) is used for dependencies injection technique.
 * [GIPHY Core SDK](https://github.com/Giphy/giphy-android-sdk-core) is a official wrapper around Giphy API.
 * [Glide](https://bumptech.github.io/glide/) is a fast and efficient image loading library for Android focused on smooth scrolling. Glide supports fetching, decoding, and displaying video stills, images, and animated GIFs.
