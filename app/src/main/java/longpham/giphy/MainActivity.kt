@@ -1,5 +1,6 @@
 package longpham.giphy
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -28,12 +29,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
         networkErrorTextView = findViewById(R.id.network_error_textview)
+        checkNetworkConnection()
+
         supportFragmentManager
                 .beginTransaction()
                 .add(R.id.main_content, TrendingFragment.getInstance())
                 .commit()
-        checkNetworkConnection()
     }
 
     fun startNewFragment(newFragment: BaseFragment) {
@@ -48,7 +51,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     /***Monitor network connectivity***/
     private val _networkConnectivity = MutableLiveData<Boolean>()
-    val networkConnectivityLiveData = _networkConnectivity
+    val networkConnectivityLiveData: LiveData<Boolean>
+        get() = _networkConnectivity
 
     private fun checkNetworkConnection(): Boolean {
         fun isConnected(): Boolean {
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     ?: return false
             return when (activeNetwork.type) {
                 ConnectivityManager.TYPE_WIFI -> true
-                ConnectivityManager.TYPE_MOBILE-> true
+                ConnectivityManager.TYPE_MOBILE -> true
                 else -> false
             }
         }
@@ -65,15 +69,17 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             LogUtil.d("Network Connected: $connected")
             networkErrorTextView.visibility = if (connected) View.GONE else View.VISIBLE
         }
+
         val isConnected = isConnected()
         informNetworkConnectivity(isConnected)
+        _networkConnectivity.value = isConnected
         return isConnected
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             LogUtil.i("Network state changed")
-            _networkConnectivity.value = checkNetworkConnection()
+            checkNetworkConnection()
         }
     }
 

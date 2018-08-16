@@ -19,23 +19,15 @@ package longpham.giphy
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import longpham.giphy.models.GiphyImagesObject
-import longpham.giphy.repository.IRepository
-import longpham.giphy.viewmodel.ViewModel
-import org.junit.Before
+import longpham.giphy.ui.image.RandomImageViewModel
+import longpham.giphy.ui.trending.TrendingViewModel
 import org.junit.Rule
 import org.mockito.Mockito
 
-open class BaseViewModelTestSuite(val repository: IRepository) {
+open class BaseViewModelTestSuite {
     @Rule
     @JvmField
     val instantExecutor = InstantTaskExecutorRule()
-
-    protected lateinit var viewModel: ViewModel
-
-    @Before
-    fun init(){
-        viewModel = ViewModel(repository)
-    }
 }
 
 /**
@@ -44,13 +36,13 @@ open class BaseViewModelTestSuite(val repository: IRepository) {
 inline fun <reified T> mock(): T = Mockito.mock(T::class.java)
 
 
-fun ViewModel.createTrendingImagesObserver() =
-        mock<Observer<MutableList<GiphyImagesObject>>>().also {
+fun TrendingViewModel.createTrendingImagesObserver() =
+        mock<Observer<List<GiphyImagesObject>>>().also {
             images.observeForever(it)
         }
 
-fun ViewModel.createSelectedImageObserver() =
+fun RandomImageViewModel.createSelectedImageObserver() =
         mock<Observer<GiphyImagesObject>>().also {
-            selectedImage.observeForever(it)
+            randomImageLiveData.observeForever(it)
         }
 

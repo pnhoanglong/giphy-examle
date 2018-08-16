@@ -19,40 +19,39 @@ import longpham.giphy.models.GiphyImagesObject
 import longpham.giphy.repository.IRepository
 import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.InfiniteScrollListener
-import longpham.giphy.ui.image.ImageFragment
+import longpham.giphy.ui.image.RandomImageFragment
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
-import longpham.giphy.viewmodel.ViewModel
 import javax.inject.Inject
 
 class TrendingFragment : BaseFragment(), Injectable {
+    private val PRELOAD_ADHEAD_ITEMS = 10
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var repository: IRepository
 
-    private lateinit var viewModel: ViewModel
+    private lateinit var viewModel: TrendingViewModel
 
     private lateinit var binding: TrendingFragmentBinding
     private lateinit var recyclerViewAdapter: ImageRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private val PRELOAD_ADHEAD_ITEMS = 10
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
-                .get(ViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(TrendingViewModel::class.java)
         recyclerViewAdapter = ImageRecyclerViewAdapter(fragment = this, items = mutableListOf()) { clickedItem ->
-            viewModel.setSelectedImage(image = clickedItem)
-            startImageFragment()
+            startImageFragment(clickedItem)
         }
         binding.imageRecyclerView.adapter = recyclerViewAdapter
 
         // Observer images live data
         viewModel.images.observe(this, Observer { images ->
             images?.let {
-                recyclerViewAdapter.items = it
+                recyclerViewAdapter.items.addAll(it)
                 recyclerViewAdapter.notifyDataSetChanged()
                 binding.progressBar.visibility = View.GONE
             }
@@ -64,16 +63,14 @@ class TrendingFragment : BaseFragment(), Injectable {
             addOnScrollListener(createGlideRecyclerViewIntegrationScrollListener())
         }
 
-        // Load Images from server
-        viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
-
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isNetworkConnected ->
-            // Load more image if network changed to connected
-            if (!isNetworkConnected!!){
+            // Load trending images if network is connected and list is empty
+            if (!isNetworkConnected!! || recyclerViewAdapter.itemCount > 0){
                 return@Observer
             }
-            viewModel.loadTrendingImages(limit = AppConstants.INIT_LOAD_ITEMS_COUNT)
+            LogUtil.e("Force load trending image")
+            viewModel.loadTrendingImages(requestItemsCount = AppConstants.ITEMS_PER_REQUEST)
         })
     }
 
@@ -89,14 +86,13 @@ class TrendingFragment : BaseFragment(), Injectable {
     }
 
     private fun createInfiniteScrollListener(): InfiniteScrollListener =
-            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.INIT_LOAD_ITEMS_COUNT,
+            object : InfiniteScrollListener(maxItemsPerRequest = AppConstants.ITEMS_PER_REQUEST,
                     layoutManager = linearLayoutManager) {
                 override fun onScrolledToEnd(firstVisibleItemPosition: Int) {
-                    if (firstVisibleItemPosition + AppConstants.LOAD_MORE_ITEMS_COUNT <= recyclerViewAdapter.items.size){
+                    if (firstVisibleItemPosition + AppConstants.ITEMS_PER_REQUEST <= recyclerViewAdapter.items.size){
                         //No need to load more item
                         return
                     }
-
                     viewModel.loadTrendingImages()
                     binding.progressBar.apply {
                         visibility = View.VISIBLE
@@ -111,8 +107,12 @@ class TrendingFragment : BaseFragment(), Injectable {
        return  RecyclerViewPreloader<GiphyImagesObject>(this, recyclerViewAdapter, sizeProvider, PRELOAD_ADHEAD_ITEMS)
     }
 
-    private fun startImageFragment() {
-        val imageFragment = ImageFragment.getInstance()
+    private fun startImageFragment(selectedImage: GiphyImagesObject) {
+        val imageFragment = RandomImageFragment.getInstance()
+        imageFragment.arguments = Bundle().apply {
+            putString(RandomImageFragment.KEY_SELECTED_IMAGE_URL, selectedImage.gifImage.url)
+            putString(RandomImageFragment.KEY_SELECTED_IMAGE_TAG, selectedImage.tag)
+        }
         startNewFragment(imageFragment)
     }
 

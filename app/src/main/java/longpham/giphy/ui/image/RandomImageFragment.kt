@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,16 +20,19 @@ import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
-import longpham.giphy.viewmodel.ViewModel
+import java.util.*
 import javax.inject.Inject
+class RandomImageFragment : BaseFragment(), Injectable {
 
-class ImageFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ViewModel
+    private lateinit var viewModel: RandomImageViewModel
 
     private lateinit var binding: ImageFragmentBinding
-    private var loadingNextImage = true
+
+    private var currentImageTag = ""
+    private var timer: Timer? = null
+    private var loadingRandomImageDelay = AppConstants.RANDOM_IMAGE_INTERVAL
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.image_fragment, container, false)
@@ -43,54 +45,72 @@ class ImageFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(mainActivity, viewModelFactory)
-                .get(ViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get((RandomImageViewModel::class.java))
+
+        arguments?.let {
+             it.getString(KEY_SELECTED_IMAGE_URL)?.apply {
+                 LogUtil.d("Display from trending image: $this")
+                 displayImage(this)
+             }
+            currentImageTag = it.getString(KEY_SELECTED_IMAGE_TAG) ?: ""
+        }
 
         //Observer random image live data
-        viewModel.selectedImage.observe(this, Observer { selectedImage ->
-            if (selectedImage == null) return@Observer
-            LogUtil.d("Display random image: ${selectedImage!!.gifImage.url}")
-            GlideApp.with(this)
-                    .load(selectedImage!!.gifImage.url)
-                    .fitCenter().listener(glideListener)
-                    .into(binding.imageView)
+        viewModel.randomImageLiveData.observe(this, Observer { image ->
+            if (image != null) {
+                LogUtil.d("Display random image: ${image.gifImage.url}")
+                currentImageTag = image.tag
+                displayImage(image.gifImage.url)
+            }
         })
-        scheduleLoadRandomImage()
 
         //Observer network connectivity
         networkConnectivityLiveData.observe(this, Observer { isConnected ->
             if (!isConnected!!) {
-                loadingNextImage = false
+                timer?.cancel()
+                loadingRandomImageDelay = 0
                 return@Observer
             }
-            if (loadingNextImage) return@Observer
 
-            LogUtil.i("Network connected -> Load random image")
-            loadingNextImage = true
-            viewModel.getNextRandomImage()
+            timer = Timer()
+            timer?.schedule(object : TimerTask() {
+                override fun run() {
+                    viewModel.imageTagLiveData.postValue(currentImageTag)
+                }
+            }, loadingRandomImageDelay, AppConstants.RANDOM_IMAGE_INTERVAL)
         })
     }
 
-    private fun scheduleLoadRandomImage() {
-        // Do not schedule the next loading if fragment is detached or network is disconnected
-        if (isDetached || !loadingNextImage) return
-        binding.root.postDelayed({
-            viewModel.getNextRandomImage()
-            scheduleLoadRandomImage()
-        }, AppConstants.RANDOM_IMAGE_INTERVAL)
+    override fun onStop() {
+        super.onStop()
+        timer?.cancel()
     }
 
     private val glideListener = object: RequestListener<Drawable>{
         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
             LogUtil.e("Failed to image because ${e?.message}")
-            viewModel.getNextRandomImage()
+            loadRandomImage()
             return false
         }
 
         override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean)  = false
     }
 
+    private fun loadRandomImage() {
+        viewModel.imageTagLiveData.value = currentImageTag
+    }
+
+    private fun displayImage(imageUrl: String) {
+        GlideApp.with(this)
+                .load(imageUrl)
+                .fitCenter().listener(glideListener)
+                .into(binding.imageView)
+    }
+
     companion object {
-        fun getInstance(): ImageFragment = ImageFragment()
+        const val KEY_SELECTED_IMAGE_URL = "image_url"
+        const val KEY_SELECTED_IMAGE_TAG = "image_tag"
+
+        fun getInstance() = RandomImageFragment()
     }
 }
