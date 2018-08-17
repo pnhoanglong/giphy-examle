@@ -27,10 +27,11 @@ class MockRepository: IRepository {
     }
 
     companion object {
-        val stillImage = GiphyImage(url = "https://4.imimg.com/data4/KQ/QE/ANDROID-40327085/product-500x500.jpeg", with = 0, height = 0)
-        val gifImage = GiphyImage(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif", with = 0, height = 0)
+        val stillImage = GiphyImage(url = "https://4.imimg.com/data4/KQ/QE/ANDROID-40327085/product-500x500.jpeg",
+                with = 0, height = 0)
+        val gifImage = GiphyImage(url = "https://media2.giphy.com/media/2eLAwdushm3cI/100w.gif",
+                with = 0, height = 0)
         val image = GiphyImagesObject(stillImage = stillImage, gifImage = gifImage, tag = "tag")
-
     }
 }
 

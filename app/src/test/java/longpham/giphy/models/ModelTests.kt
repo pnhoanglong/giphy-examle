@@ -11,18 +11,19 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 
 @RunWith(JUnit4::class)
-class ModelTests{
-    val giphySdkImage  = mock(Image::class.java)
+class ModelTests {
+    val giphySdkImage = mock(Image::class.java)
     val nullUrlImge = mock(Image::class.java)
     val nullImage: Image? = null
     val imageUrl = "not null url"
     val tag = "tag"
+
     init {
         `when`(giphySdkImage.gifUrl).thenReturn(imageUrl)
     }
 
     @Test
-    fun testCreateImageModelFromSdkImages(){
+    fun testCreateImageModelFromSdkImages() {
         val sdkImage = mutableListOf(nullImage, nullUrlImge)
         assertNull(sdkImage.createImageModel())
 
@@ -46,7 +47,7 @@ class ModelTests{
     }
 
     @Test
-    fun testConvertFromSdkMediaToGiphyImage(){
+    fun testConvertFromSdkMediaToGiphyImage() {
         val sdkMedia = mock(Media::class.java)
         assertNull(sdkMedia.toGiphyImage())
         val sdkImages = mock(Images::class.java)
@@ -56,7 +57,6 @@ class ModelTests{
         `when`(sdkMedia.tags).thenReturn(mutableListOf(tag))
         val giphyImage = sdkMedia.toGiphyImage()
         verifyGiphyImagesObject(giphyImage!!)
-
     }
 
     private fun verifyGiphyImagesObject(giphyImage: GiphyImagesObject) {
