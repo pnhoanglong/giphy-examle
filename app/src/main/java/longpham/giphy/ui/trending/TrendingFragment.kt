@@ -23,6 +23,9 @@ import longpham.giphy.ui.randomimage.RandomImageFragment
 import longpham.giphy.util.AppConstants
 import javax.inject.Inject
 
+/**
+ * Fragment class shows trending images
+ */
 class TrendingFragment : BaseFragment(), Injectable {
     private val PRELOAD_ADHEAD_ITEMS = 10
 

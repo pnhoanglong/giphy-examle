@@ -25,7 +25,7 @@ data class GiphyImagesObject (
 )
 
 /**
- * Convert from Giphy API Media Response Object to GiphyImagesObject Model
+ * Convert from Giphy API Media Response Object to GiphyImagesObject Model.
  */
 
 fun Media?.toGiphyImage(): GiphyImagesObject? {

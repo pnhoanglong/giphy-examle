@@ -28,6 +28,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import longpham.giphy.GiphyApp
 
 /**
+ * Marks an activity / fragment injectable.
+ */
+interface Injectable
+
+/**
  * Helper class to automatically inject fragments if they implement [Injectable].
  */
 object AppInjector {
@@ -76,5 +81,3 @@ object AppInjector {
         }
     }
 }
-
-

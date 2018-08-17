@@ -7,6 +7,9 @@ import dagger.android.HasActivityInjector
 import longpham.giphy.di.AppInjector
 import javax.inject.Inject
 
+/**
+ * Custom application class.
+ */
 class GiphyApp: Application(), HasActivityInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>

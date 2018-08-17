@@ -12,8 +12,13 @@ import com.bumptech.glide.module.AppGlideModule
 class DataBoundViewHolder<out T : ViewDataBinding> constructor(val binding: T) :
         RecyclerView.ViewHolder(binding.root)
 
+/**
+ * Util class to display images
+ */
 @GlideModule
-class GiphyAppGlideModule: AppGlideModule() {
-}
+class GiphyAppGlideModule: AppGlideModule()
 
+/**
+ * Get Device Screen Width
+ */
 fun getScreenWidth(): Int =  Resources.getSystem().displayMetrics.widthPixels

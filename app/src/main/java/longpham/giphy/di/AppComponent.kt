@@ -7,6 +7,9 @@ import dagger.android.AndroidInjectionModule
 import longpham.giphy.GiphyApp
 import javax.inject.Singleton
 
+/**
+ * Interface for application's dependency injection.
+ */
 @Singleton
 @Component(modules = [
     AndroidInjectionModule::class,

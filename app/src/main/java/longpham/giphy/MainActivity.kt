@@ -19,6 +19,9 @@ import longpham.giphy.ui.common.BaseFragment
 import longpham.giphy.ui.trending.TrendingFragment
 import javax.inject.Inject
 
+/**
+ * Application Main Activity.
+ */
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
