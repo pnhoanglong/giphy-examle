@@ -13,9 +13,9 @@ import longpham.giphy.ui.common.DataBoundViewHolder
 import longpham.giphy.ui.common.GlideApp
 import longpham.giphy.ui.common.getScreenWidth
 import longpham.giphy.util.AppConstants
-import longpham.giphy.util.LogUtil
 
-class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: MutableList<GiphyImagesObject>, val itemViewOnClickListener: ((GiphyImagesObject) -> Unit)? = null) :
+class ImageRecyclerViewAdapter(private val fragment: Fragment, var items: MutableList<GiphyImagesObject>,
+                               val itemViewOnClickListener: ((GiphyImagesObject) -> Unit)? = null) :
         RecyclerView.Adapter<DataBoundViewHolder<ImageListItemViewBinding>>(), ListPreloader.PreloadModelProvider<GiphyImagesObject> {
 
     override fun getItemCount(): Int = items.size

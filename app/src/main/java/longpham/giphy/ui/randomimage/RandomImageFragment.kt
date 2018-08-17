@@ -22,12 +22,19 @@ import longpham.giphy.util.AppConstants
 import longpham.giphy.util.LogUtil
 import java.util.*
 import javax.inject.Inject
+
+/**
+ * Fragment shows image selected from trending images and random images.
+ */
 class RandomImageFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: RandomImageViewModel
 
+    /**
+     * Databing object used to binding data between fragment class and xml layout file.
+     */
     private lateinit var binding: ImageFragmentBinding
 
     private var currentImageTag = ""
@@ -47,6 +54,7 @@ class RandomImageFragment : BaseFragment(), Injectable {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get((RandomImageViewModel::class.java))
 
+        // Get image selected in trending screen
         arguments?.let {
              it.getString(KEY_SELECTED_IMAGE_URL)?.apply {
                  displayImage(this)

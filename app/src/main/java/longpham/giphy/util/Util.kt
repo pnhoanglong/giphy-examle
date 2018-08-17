@@ -1,6 +1,5 @@
 package longpham.giphy.util
 
-import longpham.giphy.repository.IRepository
 import android.util.Log
 import longpham.giphy.BuildConfig
 
@@ -21,11 +20,3 @@ object LogUtil {
 }
 
 fun Throwable.logException() = LogUtil.log { this.printStackTrace() }
-
-fun showRandomImage(repository: IRepository) {
-    val tag = "RandomImage"
-    LogUtil.i("Execute get random image")
-    repository.getRandomImage("tag").observeForever {
-        LogUtil.i(tag, it.toString())
-    }
-}
