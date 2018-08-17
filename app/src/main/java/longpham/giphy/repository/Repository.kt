@@ -9,20 +9,25 @@ import longpham.giphy.util.GiphyConstants
 import longpham.giphy.util.logException
 import javax.inject.Inject
 
+/**
+ * Interface for application' data source.
+ */
 interface IRepository {
     /**
-     * Get trending images from server
+     * Get trending images from server.
      */
-    //TODO: Should be change to single event
     fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImagesObject>>
 
 
     /**
-     * Get a random image from server
+     * Get a random image from server.
      */
     fun getRandomImage(tag: String): LiveData<GiphyImagesObject>
 }
 
+/**
+ * This repository provides data from GIPHY api.
+ */
 class GiphyRepository @Inject constructor(val giphyApi: GPHApi) : IRepository {
     override fun getTrendingImages(limit: Int?, offset: Int?): LiveData<List<GiphyImagesObject>> {
         val liveData = MutableLiveData<List<GiphyImagesObject>>()

@@ -21,7 +21,10 @@ import longpham.giphy.viewmodel.ViewModelFactory
 import longpham.giphy.viewmodel.ViewModelKey
 import javax.inject.Singleton
 
-@Module(includes = [VieModelModule::class])
+/**
+ * This class provides application level's dependencies
+ */
+@Module(includes = [ViewModelModule::class])
 class AppModule {
     @Singleton
     @Provides
@@ -32,6 +35,9 @@ class AppModule {
     fun provideRepository(giphyRepository: GiphyRepository): IRepository = giphyRepository
 }
 
+/**
+ * These two below classes declare activities and fragments to which dependencies are injected
+ */
 @Module
 abstract class MainActivityModule{
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
@@ -47,8 +53,12 @@ abstract class FragmentBuilderModule {
     abstract fun contributeImageFragment(): RandomImageFragment
 }
 
+
+/**
+ * This class provides dependencies for fragments
+ */
 @Module
-abstract class VieModelModule {
+abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(TrendingViewModel::class)
@@ -62,7 +72,3 @@ abstract class VieModelModule {
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
-/**
- * Marks an activity / fragment injectable.
- */
-interface Injectable

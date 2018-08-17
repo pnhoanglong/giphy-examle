@@ -5,11 +5,14 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import longpham.giphy.MainActivity
 
+/**
+ * Base class for all application fragment.
+ */
 open class BaseFragment: Fragment() {
     lateinit var mainActivity: MainActivity
 
     /**
-     * LiveData is used for fragment sub-class to handle network status
+     * LiveData is used for fragment sub-class to handle network status.
      */
     val networkConnectivityLiveData: LiveData<Boolean>
         get() = mainActivity.networkConnectivityLiveData
