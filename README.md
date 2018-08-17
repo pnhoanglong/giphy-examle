@@ -14,8 +14,12 @@ Giphy is a demo application showing images from [GIPHY](https://giphy.com/). It 
 
 
 ## Application Architecture
-### Programing Language:
-Kotlin v1.2.30
+### Application Info
+* Prgraming language: Kotlin v1.2.30
+* Application name: Giphy
+* Application package name: `pnhoanlong.giphy`
+* Min SDK version: 16
+
 ### Implementation
 The architecture of this application is **Model-View-ViewModel**. This MVVM architecture is chosen because:
 * Separation the responsibility of the classes: The Android framework Activity and Fragment classes just show and update UI, The Model classes store data which is used to display UI (as well as processing their data); and The ViewModel classes provide the data for the view by exposing their model. This separation makes it easier to maintain and extend application.
