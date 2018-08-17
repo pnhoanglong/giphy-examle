@@ -65,7 +65,4 @@ class ModelTests{
         assertEquals(imageUrl, giphyImage.stillImage.url)
         assertEquals(imageUrl, giphyImage.gifImage.url)
     }
-    val tags = mutableListOf(tag)
 }
-
-
