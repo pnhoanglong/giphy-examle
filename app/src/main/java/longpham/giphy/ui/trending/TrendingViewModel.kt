@@ -29,7 +29,7 @@ class TrendingViewModel @Inject constructor(private val repository: IRepository)
     fun loadTrendingImages(requestItemsCount: Int = AppConstants.ITEMS_PER_REQUEST) {
         if (requestItemsCount <= 0) return // only process one loading  images task
         limit = requestItemsCount
-        offset = images.value?.size ?: 0
         offsetLiveData. value = offset
+        offset += limit
     }
 }
